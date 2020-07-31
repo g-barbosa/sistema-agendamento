@@ -1,55 +1,13 @@
-import { Request, Response } from 'express'
-import knex from '../database/connection'
-import uuid from 'uuid-random';
-import { Prices } from '../database/interfaces'
+import express from 'express'
+import { PricesService } from '../services/PricesService'
 
-class PricesController {
-    async prices (request: Request, response: Response) {
-        const prices : Prices[] = await knex('prices')
+const pricesService = new PricesService()
 
-        return response.json(prices)
-    }
+const PricesController = express.Router()
 
-    async addPrice (request: Request, response: Response) {
-        try{
-            const { description, value } = request.body;
-
-            await knex('prices').insert({
-                entityId: uuid(),
-                description: description,
-                value: value,
-
-            })
-            .then(() => response.status(200).send())
-            
-        } catch(error){
-            throw new Error(error)
-        }
-    }
-
-    async editPrice (request: Request, response: Response) {
-        const { id } = request.params
-        const { description, value } = request.body;
-
-        const item = await knex('prices').where('id', id).update({
-            description: description,
-            value: value
-        })
-
-        if (!item) {
-            return response.status(404).json({message: 'Item not found'})
-        }
-
-        return response.status(200).send()
-    }
-
-    async deletePrice (request: Request, response: Response) {
-        const { id } = request.params
-
-        await knex('prices').where('id', id).del()
-
-        return response.status(200).send()
-    }
-}
+PricesController.get('/prices', pricesService.prices)
+PricesController.post('/prices', pricesService.addPrice)
+PricesController.put('/prices/:id', pricesService.editPrice)
+PricesController.delete('/prices/:id', pricesService.deletePrice)
 
 export default PricesController

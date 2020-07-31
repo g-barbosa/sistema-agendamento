@@ -4,12 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --transpileOnly --ignore-watch node_modules src/server.ts",
+    "dev": "ts-node-dev --transpile-only --respawn --ignore-watch node_modules src/server.ts",
     "knex:migrate": "knex --knexfile knexfile.ts migrate:latest",
     "knex:seed": "knex --knexfile knexfile.ts seed:run",
-    "pretest": "set NODE_ENV=test&&knex --knexfile knexfile.ts migrate:latest",
-    "test": "set NODE_ENV=test&&jest --forceExit",
-    "posttest": "set NODE_ENV=test knex --knexfile knexfile.ts migrate:rollback --all"
+    "pretest": "NODE_ENV=test knex --knexfile knexfile.ts migrate:latest",
+    "test": "jest",
+    "posttest": "NODE_ENV=test knex --knexfile knexfile.ts migrate:rollback --all"
   },
   "author": "Giovanne Brito Barbosa",
   "license": "ISC",
