@@ -1,83 +1,50 @@
-import { Request, Response } from 'express'
-import { User } from '../database/interfaces'
-import knex from '../database/connection';
-import uuid from 'uuid-random';
-import genHashPass from '../utils/genPassHash'
+import { IUserRepository } from '../repositories/IUserRepository'
+import { ICreateUserRequestDTO } from '../domain/DTO/UserDTO';
+import { User } from '../domain/models/User';
 
 export class UserService {
-    async users (request: Request, response: Response) {
-        const users : User[] = await knex('users')
+    
+    constructor ( 
+        private userRepository: IUserRepository
+        ){}
 
-        return response.json(users)
+    async createUser(userData: ICreateUserRequestDTO) {
+        const userAlreadyExists = await this.userRepository.getUserByEmail(userData.email);
+
+        if (userAlreadyExists) throw new Error('Usuário já existe.');
+
+        const user = new User(userData);
+
+        await this.userRepository.create(user);
     }
 
-    async user (request: Request, response: Response) {
-        const { id } = request.params
-        const user : User = await knex('users').where('id', id).first()
+    async getAllUsers() {
+        const users: User[] = await this.userRepository.getUsers()
 
-        if (!user) {
-            return response.status(404).send('Usuário não encontrado')
-        }
-
-        return response.json(user)
+        return users
     }
 
-    async createNewUser (request: Request, response: Response) {
-        try{
-            const { name, phone, email, password, type } = request.body
+    async getUserById(id: string) {
+        const user: User = await this.userRepository.getUserById(id)
 
-            const user : User = await knex('users').where('email', email).first()
-
-            if (user) {
-                return response.status(404).send('Já existe um usuário com este e-mail')
-            }
-
-            const newUser: User = {
-                entityId: uuid(),
-                name: name,
-                phone: phone,
-                email: email,
-                password: await genHashPass(password),
-                type: type,
-            }
-
-            await knex('users').insert(newUser).then(() => response.status(200).send())
-
-        } catch(erro) {
-            throw new Error(erro);
-        }
+        return user
     }
 
-    async editUser (request: Request, response: Response) {
-        try {
-            const { id } = request.params
-            const { name, phone, email, password } = request.body
+    async updateUser(userData: ICreateUserRequestDTO, id: string) {
+        const userAlreadyExists = await this.userRepository.getUserById(id);
 
-            const userToUpdate: User = await knex('users').where('id', id).update({
-                name: name,
-                phone: phone,
-                email: email,
-            })
+        if (!userAlreadyExists) throw new Error('Usuário não encontrado.');
 
-            if (!userToUpdate) {
-                return response.status(404).send('Não foi possível encontrar um usuário com este e-mail')
-            }
+        const user = new User(userData);
 
-            return response.status(200).send()
-
-        } catch(erro) {
-            throw new Error(erro);
-        }
+        await this.userRepository.update(user, id);
     }
 
-    async deleteUser (request: Request, response: Response) {
-        const { id } = request.params
+    async deleteUser(id: string) {
+        const userAlreadyExists = await this.userRepository.getUserById(id);
 
-        
-        await knex('users').where('id', id).del()
+        if (!userAlreadyExists) throw new Error('Usuário não encontrado.');
 
-        return response.status(200).send()
+        await this.userRepository.delete(id);
     }
 }
-
-export default UserService
