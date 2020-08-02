@@ -1,13 +1,80 @@
-import express from 'express'
-import { PricesService } from '../services/PricesService'
+import { Request, Response } from 'express'
+import { PricesService } from '../services/PricesService';
 
-const pricesService = new PricesService()
+export class PricesController {
 
-const PricesController = express.Router()
+    constructor(
+        private pricesService: PricesService,
+    ){}
 
-PricesController.get('/prices', pricesService.prices)
-PricesController.post('/prices', pricesService.addPrice)
-PricesController.put('/prices/:id', pricesService.editPrice)
-PricesController.delete('/prices/:id', pricesService.deletePrice)
+    async create (request: Request, response: Response): Promise<Response> {
+        try {
+            const { description, value } = request.body
+            
+            await this.pricesService.createPrice({ description, value })
 
-export default PricesController
+            return response.status(200).send()
+
+        } catch(err){
+
+            return response.status(404).json({ message: err.message })
+        }
+    }
+
+    async getAll (request: Request, response: Response): Promise<Response> {
+        try {
+
+            const prices = await this.pricesService.getAllPrices()
+
+            return response.json(prices)
+
+        } catch(err){
+
+            return response.status(400).json({ message: err.message })
+        }
+    }
+
+    async getById (request: Request, response: Response): Promise<Response> {
+        try {
+            const { id } = request.params
+            
+            const price = await this.pricesService.getPriceById(id)
+
+
+            return response.json(price)
+
+        } catch(err){
+
+            return response.status(400).json({ message: err.message })
+        }
+    }
+
+    async update (request: Request, response: Response): Promise<Response> {
+        try {
+            const { id } = request.params
+            const { description, value } = request.body
+
+            await this.pricesService.updatePrice({ description, value}, id)
+
+            return response.status(200).send()
+
+        } catch(err){
+            return response.status(400).json({ message: err.message })
+        }
+    }
+
+    async delete (request: Request, response: Response): Promise<Response> {
+        try {
+            const { id } = request.params
+
+            await this.pricesService.deletePrice(id)
+
+            return response.status(200).send()
+
+        } catch(err){
+
+            return response.status(400).json({ message: err.message })
+        }    
+    }
+    
+}

@@ -1,52 +1,47 @@
-import { Request, Response, response } from 'express'
-import knex from '../database/connection'
-import uuid from 'uuid-random';
-import { Stock } from '../database/interfaces'
+import { IStockRepository } from '../repositories/IStockRepository'
+import { ICreateStockRequestDTO } from '../domain/DTO/StockDTO';
+import { Stock } from '../domain/models/Stock';
 
 export class StockService {
-    async stockItems (request: Request, response: Response) {
-        const stock : Stock[] = await knex('stock')
-        
-        return response.json(stock)
+    
+    constructor ( 
+        private stockRepository: IStockRepository
+        ){}
+
+    async createStock(stockData: ICreateStockRequestDTO) {
+
+        const stockItem = new Stock(stockData);
+
+        await this.stockRepository.create(stockItem);
     }
 
-    async addStockItem (request: Request, response: Response) {
-        try{
-            const { description, quantity } = request.body;
+    async getAllStock() {
+        const stockItems: Stock[] = await this.stockRepository.getStock()
 
-            await knex('stock').insert({
-                entityId: uuid(),
-                description: description,
-                quantity: quantity,
-            })
-            .then(() => response.status(200).send())
-            
-        } catch(error){
-            throw new Error(error)
-        }
+        return stockItems
     }
 
-    async editStockItem (request: Request, response: Response) {
-        const { id } = request.params
-        const { description, quantity } = request.body;
+    async getStockById(id: string) {
+        const stock: Stock = await this.stockRepository.getStockById(id)
 
-        const item = await knex('stock').where('id', id).update({
-            description: description,
-            quantity: quantity
-        })
-
-        if (!item) {
-            return response.status(404).json({message: 'Item not found'})
-        }
-
-        return response.status(200).send()
+        return stock
     }
 
-    async deleteStockItem (request: Request, response: Response) {
-        const { id } = request.params
+    async updateStock(stockData: ICreateStockRequestDTO, id: string) {
+        const stockAlreadyExists = await this.stockRepository.getStockById(id);
 
-        await knex('stock').where('id', id).del()
+        if (!stockAlreadyExists) throw new Error('item não encontrado.');
 
-        return response.status(200).send()
+        const stock = new Stock(stockData);
+
+        await this.stockRepository.update(stock, id);
+    }
+
+    async deleteStock(id: string) {
+        const stockAlreadyExists = await this.stockRepository.getStockById(id);
+
+        if (!stockAlreadyExists) throw new Error('item não encontrado.');
+
+        await this.stockRepository.delete(id);
     }
 }

@@ -1,53 +1,47 @@
-import { Request, Response } from 'express'
-import knex from '../database/connection'
-import uuid from 'uuid-random';
-import { Prices } from '../database/interfaces'
+import { IPricesRepository } from '../repositories/IPricesRepository'
+import { ICreatePriceRequestDTO } from '../domain/DTO/PricesDTO';
+import { Prices } from '../domain/models/Prices';
 
 export class PricesService {
-    async prices (request: Request, response: Response) {
-        const prices : Prices[] = await knex('prices')
+    
+    constructor ( 
+        private pricesRepository: IPricesRepository
+        ){}
 
-        return response.json(prices)
+    async createPrice(priceData: ICreatePriceRequestDTO) {
+
+        const price = new Prices(priceData);
+
+        await this.pricesRepository.create(price);
     }
 
-    async addPrice (request: Request, response: Response) {
-        try{
-            const { description, value } = request.body;
+    async getAllPrices() {
+        const prices: Prices[] = await this.pricesRepository.getPrices()
 
-            await knex('prices').insert({
-                entityId: uuid(),
-                description: description,
-                value: value,
-
-            })
-            .then(() => response.status(200).send())
-            
-        } catch(error){
-            throw new Error(error)
-        }
+        return prices
     }
 
-    async editPrice (request: Request, response: Response) {
-        const { id } = request.params
-        const { description, value } = request.body;
+    async getPriceById(id: string) {
+        const price: Prices = await this.pricesRepository.getPriceById(id)
 
-        const item = await knex('prices').where('id', id).update({
-            description: description,
-            value: value
-        })
-
-        if (!item) {
-            return response.status(404).json({message: 'Item not found'})
-        }
-
-        return response.status(200).send()
+        return price
     }
 
-    async deletePrice (request: Request, response: Response) {
-        const { id } = request.params
+    async updatePrice(priceData: ICreatePriceRequestDTO, id: string) {
+        const priceAlreadyExists = await this.pricesRepository.getPriceById(id);
 
-        await knex('prices').where('id', id).del()
+        if (!priceAlreadyExists) throw new Error('Preço não encontrado.');
 
-        return response.status(200).send()
+        const price = new Prices(priceData);
+
+        await this.pricesRepository.update(price, id);
+    }
+
+    async deletePrice(id: string) {
+        const priceAlreadyExists = await this.pricesRepository.getPriceById(id);
+
+        if (!priceAlreadyExists) throw new Error('Preço não encontrado.');
+
+        await this.pricesRepository.delete(id);
     }
 }

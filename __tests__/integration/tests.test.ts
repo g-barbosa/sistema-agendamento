@@ -1,6 +1,6 @@
 import request from 'supertest'
 import app from '../../src/server'
-import usertype from '../../src/database/Enums/UserTypeEnum'
+import usertype from '../../src/domain/enums/UserTypeEnum'
 
 describe('User Tests', () => {
     test('Should create a new user (client)', async() => {
@@ -104,7 +104,7 @@ describe('Prices Tests', () => {
 
         const item = await request(app).get('/prices')
 
-        const response = await request(app).put(`/prices/${item.body[0].id}`).send({
+        const response = await request(app).put(`/prices/${item.body[0].entityId}`).send({
             description: "Corte",
             value: 500
         })
@@ -124,7 +124,7 @@ describe('Prices Tests', () => {
 
         const item = await request(app).get('/prices')
 
-        const response = await request(app).delete(`/prices/${item.body[0].id}`)
+        const response = await request(app).delete(`/prices/${item.body[0].entityId}`)
 
         expect(response.status).toBe(200)
     })
@@ -154,7 +154,7 @@ describe('Stock Tests', () => {
 
         const item = await request(app).get('/stock')
 
-        const response = await request(app).put(`/stock/${item.body[0].id}`).send({
+        const response = await request(app).put(`/stock/${item.body[0].entityId}`).send({
             description: "Condicionador",
             quantity: 2
         })
@@ -174,7 +174,7 @@ describe('Stock Tests', () => {
 
         const item = await request(app).get('/stock')
 
-        const response = await request(app).delete(`/stock/${item.body[0].id}`)
+        const response = await request(app).delete(`/stock/${item.body[0].entityId}`)
 
         expect(response.status).toBe(200)
     })

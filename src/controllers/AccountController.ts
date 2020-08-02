@@ -1,10 +1,23 @@
-import express from 'express'
-import {AccountService} from '../services/AccountService'
+import { Request, Response } from 'express'
+import { AccountService } from '../services/AccountService';
 
-const accountService = new AccountService()
+export class AccountController {
 
-const AccountController = express.Router()
+    constructor(
+        private accountService: AccountService,
+    ){}
 
-AccountController.post('/login', accountService.login)
+    async login (request: Request, response: Response): Promise<Response> {
+        try {
+            const { email, password } = request.body
+            
+            const loginInfo = await this.accountService.login(email, password)
 
-export default AccountController
+            return response.json(loginInfo)
+
+        } catch(err){
+
+            return response.status(404).json({ message: err.message })
+        }
+    }    
+}

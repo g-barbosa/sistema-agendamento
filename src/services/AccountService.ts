@@ -1,26 +1,27 @@
 import { Request, Response } from 'express'
 import knex from '../database/connection'
 import bcrypt from 'bcrypt'
-import { User } from '../database/interfaces'
+import { User } from '../domain/models/User'
 import GenToken from '../utils/genToken'
+import { IUserRepository } from '../repositories/IUserRepository'
 
 export class AccountService {
-    async login (request: Request, response: Response) {
+    constructor ( 
+        private stockRepository: IUserRepository
+    ){}
 
-        const { email, password } = request.body
+    async login (email: string, password: string) {
 
-        const user: User = await knex('users').where('email', email).first()
+        const user = await this.stockRepository.getUserByEmail(email)
 
-        if(!user)
-            return response.status(404).send('Usuário ou senha inválidos')
+        if(!user) throw new Error('Usuário ou senha inválidos.');
 
         const pass = bcrypt.compareSync(password, user.password)
 
-        if (!pass)
-            return response.status(404).send('Usuário ou senha inválidos')
+        if (!pass) throw new Error('Usuário ou senha inválidos.');
 
-        return response.json({
-            token: GenToken(user.id!, user.email)
-        })
+        return {
+            token: GenToken(user.id, user.email)
+        }
     }
 }
