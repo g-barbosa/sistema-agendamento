@@ -1,55 +1,80 @@
 import { Request, Response } from 'express'
-import knex from '../database/connection'
-import uuid from 'uuid-random';
-import { Prices } from '../database/interfaces'
+import { PricesService } from '../services/PricesService';
 
-class PricesController {
-    async prices (request: Request, response: Response) {
-        const prices : Prices[] = await knex('prices')
+export class PricesController {
 
-        return response.json(prices)
-    }
+    constructor(
+        private pricesService: PricesService,
+    ){}
 
-    async addPrice (request: Request, response: Response) {
-        try{
-            const { description, value } = request.body;
-
-            await knex('prices').insert({
-                entityId: uuid(),
-                description: description,
-                value: value,
-
-            })
-            .then(() => response.status(200).send())
+    async create (request: Request, response: Response): Promise<Response> {
+        try {
+            const { description, value } = request.body
             
-        } catch(error){
-            throw new Error(error)
+            await this.pricesService.createPrice({ description, value })
+
+            return response.status(200).send()
+
+        } catch(err){
+
+            return response.status(404).json({ message: err.message })
         }
     }
 
-    async editPrice (request: Request, response: Response) {
-        const { id } = request.params
-        const { description, value } = request.body;
+    async getAll (request: Request, response: Response): Promise<Response> {
+        try {
 
-        const item = await knex('prices').where('id', id).update({
-            description: description,
-            value: value
-        })
+            const prices = await this.pricesService.getAllPrices()
 
-        if (!item) {
-            return response.status(404).json({message: 'Item not found'})
+            return response.json(prices)
+
+        } catch(err){
+
+            return response.status(400).json({ message: err.message })
         }
-
-        return response.status(200).send()
     }
 
-    async deletePrice (request: Request, response: Response) {
-        const { id } = request.params
+    async getById (request: Request, response: Response): Promise<Response> {
+        try {
+            const { id } = request.params
+            
+            const price = await this.pricesService.getPriceById(id)
 
-        await knex('prices').where('id', id).del()
 
-        return response.status(200).send()
+            return response.json(price)
+
+        } catch(err){
+
+            return response.status(400).json({ message: err.message })
+        }
     }
+
+    async update (request: Request, response: Response): Promise<Response> {
+        try {
+            const { id } = request.params
+            const { description, value } = request.body
+
+            await this.pricesService.updatePrice({ description, value}, id)
+
+            return response.status(200).send()
+
+        } catch(err){
+            return response.status(400).json({ message: err.message })
+        }
+    }
+
+    async delete (request: Request, response: Response): Promise<Response> {
+        try {
+            const { id } = request.params
+
+            await this.pricesService.deletePrice(id)
+
+            return response.status(200).send()
+
+        } catch(err){
+
+            return response.status(400).json({ message: err.message })
+        }    
+    }
+    
 }
-
-export default PricesController

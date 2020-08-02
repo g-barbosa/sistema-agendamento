@@ -1,54 +1,80 @@
-import { Request, Response, response } from 'express'
-import knex from '../database/connection'
-import uuid from 'uuid-random';
-import { Stock } from '../database/interfaces'
+import { Request, Response } from 'express'
+import { StockService } from '../services/StockService';
 
-class StockController {
-    async stockItems (request: Request, response: Response) {
-        const stock : Stock[] = await knex('stock')
-        
-        return response.json(stock)
-    }
+export class StockController {
 
-    async addStockItem (request: Request, response: Response) {
-        try{
-            const { description, quantity } = request.body;
+    constructor(
+        private stockService: StockService,
+    ){}
 
-            await knex('stock').insert({
-                entityId: uuid(),
-                description: description,
-                quantity: quantity,
-            })
-            .then(() => response.status(200).send())
+    async create (request: Request, response: Response): Promise<Response> {
+        try {
+            const { description, quantity } = request.body
             
-        } catch(error){
-            throw new Error(error)
+            await this.stockService.createStock({ description, quantity })
+
+            return response.status(200).send()
+
+        } catch(err){
+
+            return response.status(404).json({ message: err.message })
         }
     }
 
-    async editStockItem (request: Request, response: Response) {
-        const { id } = request.params
-        const { description, quantity } = request.body;
+    async getAll (request: Request, response: Response): Promise<Response> {
+        try {
 
-        const item = await knex('stock').where('id', id).update({
-            description: description,
-            quantity: quantity
-        })
+            const stock = await this.stockService.getAllStock()
 
-        if (!item) {
-            return response.status(404).json({message: 'Item not found'})
+            return response.json(stock)
+
+        } catch(err){
+
+            return response.status(400).json({ message: err.message })
         }
-
-        return response.status(200).send()
     }
 
-    async deleteStockItem (request: Request, response: Response) {
-        const { id } = request.params
+    async getById (request: Request, response: Response): Promise<Response> {
+        try {
+            const { id } = request.params
+            
+            const stockItem = await this.stockService.getStockById(id)
 
-        await knex('stock').where('id', id).del()
 
-        return response.status(200).send()
+            return response.json(stockItem)
+
+        } catch(err){
+
+            return response.status(400).json({ message: err.message })
+        }
     }
+
+    async update (request: Request, response: Response): Promise<Response> {
+        try {
+            const { id } = request.params
+            const { description, quantity } = request.body
+
+            await this.stockService.updateStock({ description, quantity}, id)
+
+            return response.status(200).send()
+
+        } catch(err){
+            return response.status(400).json({ message: err.message })
+        }
+    }
+
+    async delete (request: Request, response: Response): Promise<Response> {
+        try {
+            const { id } = request.params
+
+            await this.stockService.deleteStock(id)
+
+            return response.status(200).send()
+
+        } catch(err){
+
+            return response.status(400).json({ message: err.message })
+        }    
+    }
+    
 }
-
-export default StockController

@@ -1,28 +1,23 @@
 import { Request, Response } from 'express'
-import knex from '../database/connection'
-import bcrypt from 'bcrypt'
-import { User } from '../database/interfaces'
-import GenToken from '../utils/genToken'
+import { AccountService } from '../services/AccountService';
 
-class AccountController {
-    async login (request: Request, response: Response) {
+export class AccountController {
 
-        const { email, password } = request.body
+    constructor(
+        private accountService: AccountService,
+    ){}
 
-        const user: User = await knex('users').where('email', email).first()
+    async login (request: Request, response: Response): Promise<Response> {
+        try {
+            const { email, password } = request.body
+            
+            const loginInfo = await this.accountService.login(email, password)
 
-        if(!user)
-            return response.status(404).send('Usuário ou senha inválidos')
+            return response.json(loginInfo)
 
-        const pass = bcrypt.compareSync(password, user.password)
+        } catch(err){
 
-        if (!pass)
-            return response.status(404).send('Usuário ou senha inválidos')
-
-        return response.json({
-            token: GenToken(user.id!, user.email)
-        })
-    }
+            return response.status(404).json({ message: err.message })
+        }
+    }    
 }
-
-export default AccountController

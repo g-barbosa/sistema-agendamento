@@ -1,6 +1,7 @@
 import express from 'express';
-import routes from './routes'
 import cors from 'cors'
+
+import { routes }  from './routes'
 
 const app = express();
 app.use(cors())
@@ -10,4 +11,3 @@ app.use(routes)
 app.listen(3333)
 
 export default app
-//module.exports = app

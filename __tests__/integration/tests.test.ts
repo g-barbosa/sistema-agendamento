@@ -1,8 +1,6 @@
-//const request = require('supertest')
 import request from 'supertest'
-//const app = require('../../src/server')
 import app from '../../src/server'
-import usertype from '../../src/database/Enums/UserTypeEnum'
+import usertype from '../../src/domain/enums/UserTypeEnum'
 
 describe('User Tests', () => {
     test('Should create a new user (client)', async() => {
@@ -47,7 +45,7 @@ describe('User Tests', () => {
     test('Should get an user', async () => {
         const users = await request(app).get('/users')
 
-        const response = await request(app).get(`/users/${users.body[0].id}`)
+        const response = await request(app).get(`/users/${users.body[0].entityId}`)
 
         expect(response.status).toBe(200)
     })
@@ -55,26 +53,27 @@ describe('User Tests', () => {
     test('Should edit an user', async () => {
         const users = await request(app).get('/users')
 
-        const response = await request(app).put(`/users/${users.body[0].id}`).send({
+        const response = await request(app).put(`/users/${users.body[0].entityId}`).send({
             name: "New Name",
             phone: "1140028922",
-            email: "gio.barbosa11@gmail.com"
+            email: "gio.barbosa11@gmail.com",
+            password: "123456",
+            type: usertype.Client
         })
 
         expect(response.status).toBe(200)
 
-        const editedUser = await request(app).get(`/users/${users.body[0].id}`)
+        const editedUser = await request(app).get(`/users/${users.body[0].entityId}`)
 
         expect(editedUser.body.name).toBe('New Name')
         expect(editedUser.body.phone).toBe('1140028922')
         expect(editedUser.body.email).toBe('gio.barbosa11@gmail.com')
-
     })
 
     test('Should delete an user', async() => {
         const users = await request(app).get('/users')
 
-        const response = await request(app).delete(`/users/${users.body[0].id}`)
+        const response = await request(app).delete(`/users/${users.body[0].entityId}`)
 
         expect(response.status).toBe(200)
     })
@@ -104,7 +103,7 @@ describe('Prices Tests', () => {
 
         const item = await request(app).get('/prices')
 
-        const response = await request(app).put(`/prices/${item.body[0].id}`).send({
+        const response = await request(app).put(`/prices/${item.body[0].entityId}`).send({
             description: "Corte",
             value: 500
         })
@@ -124,7 +123,7 @@ describe('Prices Tests', () => {
 
         const item = await request(app).get('/prices')
 
-        const response = await request(app).delete(`/prices/${item.body[0].id}`)
+        const response = await request(app).delete(`/prices/${item.body[0].entityId}`)
 
         expect(response.status).toBe(200)
     })
@@ -154,7 +153,7 @@ describe('Stock Tests', () => {
 
         const item = await request(app).get('/stock')
 
-        const response = await request(app).put(`/stock/${item.body[0].id}`).send({
+        const response = await request(app).put(`/stock/${item.body[0].entityId}`).send({
             description: "Condicionador",
             quantity: 2
         })
@@ -174,7 +173,7 @@ describe('Stock Tests', () => {
 
         const item = await request(app).get('/stock')
 
-        const response = await request(app).delete(`/stock/${item.body[0].id}`)
+        const response = await request(app).delete(`/stock/${item.body[0].entityId}`)
 
         expect(response.status).toBe(200)
     })

@@ -1,83 +1,80 @@
 import { Request, Response } from 'express'
-import { User } from '../database/interfaces'
-import knex from '../database/connection';
-import uuid from 'uuid-random';
-import genHashPass from '../utils/genPassHash'
+import { UserService } from '../services/UserService';
 
-class UserController {
-    async users (request: Request, response: Response) {
-        const users : User[] = await knex('users')
+export class UserController {
 
-        return response.json(users)
-    }
+    constructor(
+        private userService: UserService,
+    ){}
 
-    async user (request: Request, response: Response) {
-        const { id } = request.params
-        const user : User = await knex('users').where('id', id).first()
-
-        if (!user) {
-            return response.status(404).send('Usuário não encontrado')
-        }
-
-        return response.json(user)
-    }
-
-    async createNewUser (request: Request, response: Response) {
-        try{
-            const { name, phone, email, password, type } = request.body
-
-            const user : User = await knex('users').where('email', email).first()
-
-            if (user) {
-                return response.status(404).send('Já existe um usuário com este e-mail')
-            }
-
-            const newUser: User = {
-                entityId: uuid(),
-                name: name,
-                phone: phone,
-                email: email,
-                password: await genHashPass(password),
-                type: type,
-            }
-
-            await knex('users').insert(newUser).then(() => response.status(200).send())
-
-        } catch(erro) {
-            throw new Error(erro);
-        }
-    }
-
-    async editUser (request: Request, response: Response) {
+    async create (request: Request, response: Response): Promise<Response> {
         try {
-            const { id } = request.params
-            const { name, phone, email, password } = request.body
-
-            const userToUpdate: User = await knex('users').where('id', id).update({
-                name: name,
-                phone: phone,
-                email: email,
-            })
-
-            if (!userToUpdate) {
-                return response.status(404).send('Não foi possível encontrar um usuário com este e-mail')
-            }
+            const { name, phone, email, password, type } = request.body
+            
+            await this.userService.createUser({ name, email, phone, password, type })
 
             return response.status(200).send()
 
-        } catch(erro) {
-            throw new Error(erro);
+        } catch(err){
+
+            return response.status(404).json({ message: err.message })
         }
     }
 
-    async deleteUser (request: Request, response: Response) {
-        const { id } = request.params
+    async getAll (request: Request, response: Response): Promise<Response> {
+        try {
 
-        
-        await knex('users').where('id', id).del()
+            const users = await this.userService.getAllUsers()
 
-        return response.status(200).send()
+            return response.json(users)
+
+        } catch(err){
+
+            return response.status(400).json({ message: err.message })
+        }
     }
-}
 
-export default UserController
+    async getById (request: Request, response: Response): Promise<Response> {
+        try {
+            const { id } = request.params
+            
+            const user = await this.userService.getUserById(id)
+
+
+            return response.json(user)
+
+        } catch(err){
+
+            return response.status(400).json({ message: err.message })
+        }
+    }
+
+    async update (request: Request, response: Response): Promise<Response> {
+        try {
+            const { id } = request.params
+            const { name, phone, email, password, type } = request.body
+
+            const user = await this.userService.updateUser({ name, email, phone, password, type }, id)
+
+            return response.status(200).send()
+
+        } catch(err){
+            return response.status(400).json({ message: err.message })
+        }
+    }
+
+    async delete (request: Request, response: Response): Promise<Response> {
+        try {
+            const { id } = request.params
+
+            await this.userService.deleteUser(id)
+
+            return response.status(200).send()
+
+        } catch(err){
+
+            return response.status(400).json({ message: err.message })
+        }    
+    }
+    
+}
