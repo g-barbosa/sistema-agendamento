@@ -68,7 +68,6 @@ describe('User Tests', () => {
         expect(editedUser.body.name).toBe('New Name')
         expect(editedUser.body.phone).toBe('1140028922')
         expect(editedUser.body.email).toBe('gio.barbosa11@gmail.com')
-
     })
 
     test('Should delete an user', async() => {
