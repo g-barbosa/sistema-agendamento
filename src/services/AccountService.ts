@@ -1,7 +1,4 @@
-import { Request, Response } from 'express'
-import knex from '../database/connection'
 import bcrypt from 'bcrypt'
-import { User } from '../domain/models/User'
 import GenToken from '../utils/genToken'
 import { IUserRepository } from '../repositories/IUserRepository'
 
