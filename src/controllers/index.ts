@@ -1,20 +1,34 @@
-import { 
-    accountService, 
-    pricesService, 
-    stockService, 
-    userService } from '../services'
+import {
+    agendaService,
+    customersService,
+    employeesService,
+    servicesService, 
+    productsService,
+    financesService,
+    accountService } from '../services'
     
-import { UserController }  from '../controllers/UserController'
-import { PricesController } from '../controllers/PricesController'
-import { StockController } from '../controllers/StockController'
-import { AccountController } from '../controllers/AccountController'
+import { ServicesController } from './ServicesController'
+import { ProductsController } from './ProductsController'
+import { CustomersController } from './CustomersController'
+import { EmployeesController } from './EmployeesController'
+import { AgendaController } from './AgendaController'
+import { FinancesController } from './FinancesController'
+import { AccountController } from './AccountController'
 
-const userController = new UserController(userService)
-
-const priceControler = new PricesController(pricesService)
-
-const stockControler = new StockController(stockService)
-
+const servicesControler = new ServicesController(servicesService)
+const productsControler = new ProductsController(productsService)
+const customersController = new CustomersController(customersService)
+const employeesController = new EmployeesController(employeesService)
+const agendaController = new AgendaController(agendaService)
+const financesController = new FinancesController(financesService)
 const accountController = new AccountController(accountService)
 
-export { userController,  priceControler, stockControler, accountController}
+
+export { 
+    servicesControler, 
+    productsControler, 
+    customersController, 
+    employeesController, 
+    agendaController,
+    financesController,
+    accountController }

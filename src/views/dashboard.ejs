@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+    <%- include('includes/head'); %>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        <%- include('includes/header'); %>
+        <%- include('includes/ui-theme-settings'); %>
+            <div class="app-main">
+                <%- include('includes/sidebar'); %>
+                <div class="app-main__outer">
+                    <div class="app-main__inner">
+                        <div class="app-page-title">
+                            <div class="page-title-wrapper">
+                                <div class="page-title-heading">
+                                    <div class="page-title-icon">
+                                        <i class="pe-7s-users icon-gradient bg-mean-fruit">
+                                        </i>
+                                    </div>
+                                    <div>DASHBOARD
+                                        <div class="page-title-subheading">Visualize as informações sobre as finanças do seu negócio.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="page-title-actions">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-xl-4">
+                                <div class="card mb-3 widget-content bg-midnight-bloom">
+                                    <div class="widget-content-wrapper text-white">
+                                        <div class="widget-content-left">
+                                            <div class="widget-heading">Lucro</div>
+                                            <div class="widget-subheading">Lucro total</div>
+                                        </div>
+                                        <div class="widget-content-right">
+                                            <div class="widget-numbers text-white"><span>R$ <%= finances.lucro %></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl-4">
+                                <div class="card mb-3 widget-content bg-arielle-smile">
+                                    <div class="widget-content-wrapper text-white">
+                                        <div class="widget-content-left">
+                                            <div class="widget-heading">Despesa</div>
+                                            <div class="widget-subheading">Despesa total</div>
+                                        </div>
+                                        <div class="widget-content-right">
+                                            <div class="widget-numbers text-white"><span>R$ <%= finances.despesa %></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl-4">
+                                <div class="card mb-3 widget-content bg-grow-early">
+                                    <div class="widget-content-wrapper text-white">
+                                        <div class="widget-content-left">
+                                            <div class="widget-heading">Total</div>
+                                            <div class="widget-subheading">Total</div>
+                                        </div>
+                                        <div class="widget-content-right">
+                                            <div class="widget-numbers text-white"><span>R$ <%= finances.total %></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+    <%- include('includes/scripts', {path: request.path}); %>
+
+</body>
+
+</html>

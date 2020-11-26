@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+    <%- include('includes/head'); %>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        <%- include('includes/header'); %>
+        <%- include('includes/ui-theme-settings'); %>
+            <div class="app-main">
+                <%- include('includes/sidebar'); %>
+                <div class="app-main__outer">
+                    <div class="app-main__inner">
+                        <div class="app-page-title">
+                            <div class="page-title-wrapper">
+                                <div class="page-title-heading">
+                                    <div class="page-title-icon">
+                                        <i class="pe-7s-scissors icon-gradient bg-mean-fruit">
+                                        </i>
+                                    </div>
+                                    <div>Novo Serviço
+                                        <div class="page-title-subheading">Efetuando o cadastro de um novo serviço...
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="page-title-actions"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+
+                                <div class="main-card mb-3 card">
+                                    <div class="card-body"><h5 class="card-title">Cadastrar Novo Serviço</h5>
+                                        <form method="POST" action="/prices/<%= servico.entityId %>">
+                                            <div class="position-relative form-group">
+                                                <label for="description">Nome</label>
+                                                <input name="description" id="description" placeholder="Nome do Serviço" type="text" class="form-control" value="<%= servico.description %>" required>
+                                            </div>
+                                            <!--<div class="position-relative form-group">
+                                                <label for="descricao">Descrição</label>
+                                                <textarea name="descricao" id="descricao" class="form-control"></textarea>
+                                            </div>-->
+                                            <div class="position-relative form-group">
+                                                <label for="value">Preço</label>
+                                                <input name="value" id="value" placeholder="Preço do Serviço" type="number" class="form-control" value="<%= servico.value %>" required>
+                                            </div>
+                                            <button class="mt-2 btn btn-primary" type="submit">Cadastrar</button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <%- include('includes/scripts', {path: request.path}); %>
+</body>
+
+</html>

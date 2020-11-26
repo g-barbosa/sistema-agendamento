@@ -1,12 +1,23 @@
-import { UserRepository } from './UserRepository'
-import { PricesRepository } from './PricesRepository'
-import { StockRepository } from './StockRepository'
+import { ServicosRepository } from './ServicosRepository'
+import { ProdutosRepository } from './ProdutosRepository'
+import { ClienteRepository } from './ClienteRepository'
+import { FuncionarioRepository } from './FuncionarioRepository'
+import { AgendaRepository } from './AgendaRepository'
+import { AccountRepository } from './AccountRepository'
 
-const userRepository = new UserRepository()
+const servicosRepository = new ServicosRepository()
+const produtosRepository = new ProdutosRepository()
+const clienteRepository = new ClienteRepository()
+const funcionarioRepository = new FuncionarioRepository()
+const agendaRepository = new AgendaRepository()
+const accountRepository = new AccountRepository()
 
-const pricesRepository = new PricesRepository()
-
-const stockRepository = new StockRepository()
-
-
-export { userRepository,  pricesRepository, stockRepository }
+export 
+    { 
+        servicosRepository, 
+        produtosRepository, 
+        clienteRepository, 
+        funcionarioRepository,
+        agendaRepository,
+        accountRepository
+    }

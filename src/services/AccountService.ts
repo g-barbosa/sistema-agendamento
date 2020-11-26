@@ -1,24 +1,25 @@
 import bcrypt from 'bcrypt'
-import GenToken from '../utils/genToken'
-import { IUserRepository } from '../repositories/IUserRepository'
+import { GenToken } from '../utils/PasswordUtils'
+import { IAccountRepository } from '../repositories/IAccountRepository'
 
 export class AccountService {
-    constructor ( 
-        private stockRepository: IUserRepository
+    constructor (
+        private accountRepository: IAccountRepository
     ){}
 
-    async login (email: string, password: string) {
+    async login (username: string, password: string) {
+        const errorText = 'Usuário ou senha inválidos'
 
-        const user = await this.stockRepository.getUserByEmail(email)
+        const user = await this.accountRepository.getUserByUsername(username)
 
-        if(!user) throw new Error('Usuário ou senha inválidos.');
+        if (!user) throw new Error(errorText)
 
         const pass = bcrypt.compareSync(password, user.password)
 
-        if (!pass) throw new Error('Usuário ou senha inválidos.');
+        if (!pass) throw new Error(errorText)
 
-        return {
-            token: GenToken(user.id, user.email)
-        }
+        // return GenToken(user.entityId, user.login)
+        return user
+
     }
 }

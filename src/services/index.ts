@@ -1,21 +1,33 @@
-import { 
-    pricesRepository, 
-    userRepository, 
-    stockRepository } from '../repositories/implementations'
+import {
+    agendaRepository,
+    clienteRepository,
+    funcionarioRepository,
+    servicosRepository,
+    produtosRepository,
+    accountRepository } from '../repositories/implementations'
     
-import { UserService } from '../services/UserService'
-import { PricesService } from '../services/PricesService'
+import { ServicesService } from './ServicesService'
+import { ProductsService } from './ProductsService'
+import { CustomersService } from './CustomersService'
+import { EmployeesService } from './EmployeesService'
+import { AgendaService } from './AgendaService'
+import { FinancesService } from './FinancesService'
+import { AccountService } from './AccountService'
 
-import { StockService } from '../services/StockService'
 
-import { AccountService } from '../services/AccountService'
+const servicesService = new ServicesService(servicosRepository)
+const productsService = new ProductsService(produtosRepository)
+const customersService = new CustomersService(clienteRepository)
+const employeesService = new EmployeesService(funcionarioRepository)
+const agendaService = new AgendaService(agendaRepository)
+const financesService = new FinancesService()
+const accountService = new AccountService(accountRepository)
 
-const userService = new UserService(userRepository)
-
-const pricesService = new PricesService(pricesRepository)
-
-const stockService = new StockService(stockRepository)
-
-const accountService = new AccountService(userRepository)
-
-export { userService,  pricesService, stockService, accountService}
+export { 
+    servicesService, 
+    productsService, 
+    customersService, 
+    employeesService, 
+    agendaService,
+    financesService,
+    accountService }

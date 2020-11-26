@@ -5,7 +5,7 @@ module.exports = {
   connection: {
     host: process.env.APP_DB_HOST,
     port: process.env.APP_DB_PORT,
-    database: process.env.NODE_ENV === 'test' ? process.env.APP_DB_NAME_TEST : process.env.APP_DB_NAME,
+    database: process.env.APP_DB_NAME,
     user:     process.env.APP_DB_USER,
     password: process.env.APP_DB_PASSWORD,
     ssl: false

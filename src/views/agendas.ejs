@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+    <%- include('includes/head'); %>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        <%- include('includes/header'); %>
+        <%- include('includes/ui-theme-settings'); %>
+        <div class="app-main">
+            <%- include('includes/sidebar'); %>
+            <div class="app-main__outer">
+                
+                <div class="app-main__inner">
+                    <div class="app-page-title">
+                        <div class="page-title-wrapper">
+                            <div class="page-title-heading">
+                                <div class="page-title-icon">
+                                    <i class="pe-7s-date icon-gradient bg-warm-flame">
+                                    </i>
+                                </div>
+                                <div>AGENDA
+                                    <div class="page-title-subheading">Gerencie suas tarefas a partir da agenda.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+                            <div class="main-card mb-3 card">
+                                <div class="card-body">
+                                    <div id='calendario'></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane tabs-animation fade" id="tab-content-1" role="tabpanel">
+                            <div class="main-card mb-3 card">
+                                <div class="card-body">
+                                    <div id='calendar-list'></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane tabs-animation fade" id="tab-content-2" role="tabpanel">
+                            <div class="main-card mb-3 card">
+                                <div class="card-body">
+                                    <div id="calendar-bg-events"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('includes/scripts', {path: request.path}); %>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.3.2/main.min.css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/fullcalendar@5.3.2/main.min.js"></script>
+    <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/scripts/main.js"></script>
+
+    <script type="text/javascript">
+
+    $(document).ready(function() {
+
+        var aAgenda = [
+
+            <% agendas.forEach(function(data) { %>
+
+                {
+
+                    title: "<%= data.employeeName %> - <%= data.customerName %>",
+                    start: "<%= data.data %>",
+                    end: "<%= data.data %>",
+                    id: "<%= data.id %>"
+
+                },
+
+            <% }) %>
+
+        ],
+            oClientes = {
+
+            <% clientes.forEach(function(data) { %>
+
+                "<%= data.entityId %>": {
+
+                    nome: "<%= data.name %>",
+                    telefone: "<%= data.phone %>"
+
+                },
+
+            <% }) %>
+
+        },
+            oServicos = {
+
+            <% servicos.forEach(function(data) { %>
+
+                "<%= data.entityId %>": {
+
+                    descricao: "<%= data.description %>",
+                    valor: "<%= data.value %>"
+
+                },
+
+            <% }) %>
+
+        },
+            oProdutos = {
+
+                <% produtos.forEach(function(data) { %>
+
+                    "<%= data.entityId %>": {
+
+                    descricao: "<%= data.description %>",
+                    valor: "<%= data.value %>"
+
+                },
+
+            <% }) %>                    
+        },
+            oFuncionarios = {
+
+            <% funcionarios.forEach(function(data) { %>
+
+                "<%= data.entityId %>": {
+
+                    nome: "<%= data.name %>",
+                    telefone: "<%= data.phone %>"
+
+                },
+
+            <% }) %>
+
+        }
+
+        let $calendar = $("#calendario")[0]
+
+        calendar = new FullCalendar.Calendar($calendar, {
+            locale: 'pt-br',
+            headerToolbar: {
+
+                start: "prev,next",
+                center: "title",
+                end: ""//"dayGridMonth,timeGridWeek,timeGridDay"
+
+            },
+            initialView: 'dayGridMonth',
+            themeSystem: "bootstrap",
+            nowIndicator: true,
+            dateClick: function(info) {
+
+                let oDate = new Date(info.dateStr)
+
+                // change the day's background color just for fun
+                // info.dayEl.style.backgroundColor = 'red';
+
+                let $modal = $("<div />", {
+
+                    class: "modal fade",
+                    tabindex: "-1",
+                    role: "dialog",
+                    "aria-labelledby": "teste",
+                    "aria-modal": "true",
+                    html: `<div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+
+                            <form>
+
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Novo Agendamento</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="row">
+
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="data" class="">Data</label>
+                                                <input type="date" name="data" id="data" placeholder="Data" class="form-control-sm form-control" value="` + info.dateStr + `" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                        </div>
+                                        <div class="col-sm-4">
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div class="col-sm-8">
+                                            <div class="form-group">
+                                                <label for="cliente" class="">Cliente</label>
+                                                <select name="cliente" class="form-control-sm form-control" required>
+                                                    <option value="">-- Selecione --</option>
+                                                    <% clientes.forEach(function(data) { %>
+                                                    <option value="<%= data.entityId %>"><%= data.name %></option>
+                                                    <% }) %>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <br>
+
+                                    <table class="mb-0 table">
+                                        <thead>
+                                            <tr>
+                                                <th width="40%">Serviço</th>
+                                                <th width="30%">Produto</th>
+                                                <th width="30%">Profissional</th>
+                                                <th width="10%">Hora</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <select name="servico" class="form-control-sm form-control" required>
+                                                        <option value="">-- Selecione --</option>
+                                                        <% servicos.forEach(function(data) { %>
+                                                        <option value="<%= data.entityId %>"><%= data.description %></option>
+                                                        <% }) %>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select name="produto" class="form-control-sm form-control" required>
+                                                        <option value="">-- Selecione --</option>
+                                                        <% produtos.forEach(function(data) { %>
+                                                        <option value="<%= data.entityId %>"><%= data.description %></option>
+                                                        <% }) %>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select name="profissional" class="form-control-sm form-control" required>
+                                                        <option value="">-- Selecione --</option>
+                                                        <% funcionarios.forEach(function(data) { %>
+                                                        <option value="<%= data.entityId %>"><%= data.name %></option>
+                                                        <% }) %>
+                                                    </select>
+                                                </td>
+                                                <td><input type="time" name="hora" class="form-control-sm form-control" required></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <br>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                    <button type="submit" class="btn btn-primary">Agendar</button>
+                                </div>
+
+                            </form>
+                            
+                        </div>
+                    </div>`
+
+                }).modal("show")
+
+                $modal.find("form").submit(function(e) {
+
+                    e.preventDefault()
+
+                    let $form = $(this),
+                        oData = $form.serializeArray(),
+                        oDataFormat = {}
+
+                    $.each(oData, function(k, v) {
+
+                        oDataFormat[v.name] = v.value
+
+                    })
+
+                    let oPostData = {
+
+                        data: new Date(oDataFormat["data"] + " " + oDataFormat["hora"] + ":00").getTime(),
+                        employeeId: oDataFormat["profissional"],
+                        customerId: oDataFormat["cliente"],
+                        serviceId: oDataFormat["servico"],
+                        productId: oDataFormat["produto"]
+
+                    }
+
+                    $.ajax({
+
+                        url: "/agenda",
+                        type: "POST",
+                        data: oPostData,
+                        dataType: "JSON"
+
+                    }).done(function(oData) {
+
+
+                    }).fail(function(oErr) {
+
+
+                    }).always(function() {
+
+                        $modal.modal("hide")
+
+                        window.location.reload()
+
+                    })
+
+                })
+
+                $modal.on('hidden.bs.modal', function (event) {
+                    
+                    this.remove()
+
+                });
+
+            },
+            eventClick: function(info) {
+
+                let sId = info.event.id
+
+                $.getJSON("/agenda/" + sId, function(oData) {
+
+                    let oDate = new Date(oData.data),
+                        hour = oDate.getHours() < 10 ? "0" + oDate.getHours() : oDate.getHours(),
+                        minute = oDate.getMinutes() < 10 ? "0" + oDate.getMinutes() : oDate.getMinutes(),
+                        seconds = oDate.getSeconds() < 10 ? "0" + oDate.getSeconds() : oDate.getSeconds(),
+                        time = hour + ":" + minute + ":" + seconds
+
+                    let $modal = $("<div />", {
+
+                        class: "modal fade",
+                        tabindex: "-1",
+                        role: "dialog",
+                        "aria-labelledby": "teste",
+                        "aria-modal": "true",
+                        html: `<div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Visualizar Agendamento "` + oData.employeeName + ` - ` + oData.customerName + `"</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+
+                                <div class="modal-body">
+                                    
+                                    <div class="row">
+
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <b>Data</b>
+                                                <p>` + oDate.toLocaleDateString() + `</p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div class="col-sm-8">
+                                            <div class="form-group">
+                                                <b>Cliente</b>
+                                                <p>` + oData.customerName + `</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <br>
+
+                                    <table class="mb-0 table">
+                                        <thead>
+                                            <tr>
+                                                <th width="40%">Serviço</th>
+                                                <th width="40%">Produto</th>
+                                                <th width="30%">Profissional</th>
+                                                <th width="10%">Hora</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <span>` + oData.service + `</span>
+                                                </td>
+                                                <td>
+                                                    <span>` + oData.product + `</span>
+                                                </td>
+                                                <td>
+                                                    <span>` + oData.employeeName + `</span>
+                                                </td>
+                                                <td>
+                                                    <span>` + time + `</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                    
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                </div>
+                                
+                            </div>
+                        </div>`
+
+                    }).modal("show")
+
+                    let $btnExcluir = $("<button />", {
+
+                        type: "button",
+                        class: "btn btn-danger",
+                        text: "Excluir"
+                        
+                    }).click(function() {
+
+                        deleteAgenda(sId)
+
+                    }).appendTo($modal.find(".modal-footer"))
+
+                })
+
+            },
+            events: aAgenda
+        });
+
+        calendar.render()
+
+/*
+        $("#calendare").fullCalendar({
+    header: {
+        left: "prev,next today",
+        center: "title",
+        right: "month,basicWeek,basicDay"
+    },
+    themeSystem: "bootstrap4",
+    bootstrapFontAwesome: !0,
+    defaultDate: "2018-03-12",
+    navLinks: !0,
+    editable: !0,
+    eventLimit: !0,
+    events: [{
+        title: "All Day Event",
+        start: "2018-03-01"
+    }, {
+        title: "Long Event",
+        start: "2018-03-07",
+        end: "2018-03-10"
+    }, {
+        id: 999,
+        title: "Repeating Event",
+        start: "2018-03-09T16:00:00"
+    }, {
+        id: 999,
+        title: "Repeating Event",
+        start: "2018-03-16T16:00:00"
+    }, {
+        title: "Conference",
+        start: "2018-03-11",
+        end: "2018-03-13"
+    }, {
+        title: "Meeting",
+        start: "2018-03-12T10:30:00",
+        end: "2018-03-12T12:30:00"
+    }, {
+        title: "Lunch",
+        start: "2018-03-12T12:00:00"
+    }, {
+        title: "Meeting",
+        start: "2018-03-12T14:30:00"
+    }, {
+        title: "Happy Hour",
+        start: "2018-03-12T17:30:00"
+    }, {
+        title: "Dinner",
+        start: "2018-03-12T20:00:00"
+    }, {
+        title: "Birthday Party",
+        start: "2018-03-13T07:00:00"
+    }, {
+        title: "Click for Google",
+        url: "http://google.com/",
+        start: "2018-03-28"
+    }]
+})    */
+
+    })
+
+    </script>
+
+</body>
+
+</html>
