@@ -7,14 +7,6 @@ export class FinancesController {
         private financesService: FinancesService,
     ){}
 
-    async show (request: Request, response: Response): Promise<void> {
-
-        const finances = await this.financesService.get()
-
-        return response.render('dashboard', {request: request, finances: finances})
-
-    }
-
     async get (request: Request, response: Response): Promise<Response> {
         try {
 

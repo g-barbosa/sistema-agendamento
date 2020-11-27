@@ -27,7 +27,7 @@ routesRest.get('/services/:id', (request, response) => {
     return servicesControler.getById(request, response)
 })
 
-routesRest.post('/services/:id', (request, response) => {
+routesRest.put('/services/:id', (request, response) => {
     return servicesControler.update(request, response)
 })
 
@@ -48,7 +48,7 @@ routesRest.get('/product/:id', (request, response) => {
     return productsControler.getById(request, response)
 })
 
-routesRest.post('/product/:id', (request, response) => {
+routesRest.put('/product/:id', (request, response) => {
     return productsControler.update(request, response)
 })
 
@@ -69,7 +69,7 @@ routesRest.get('/customers/:id', (request, response) => {
     return customersController.getById(request, response)
 })
 
-routesRest.post('/customers/:id', (request, response) => {
+routesRest.put('/customers/:id', (request, response) => {
     return customersController.update(request, response)
 })
 
@@ -90,7 +90,7 @@ routesRest.get('/employees/:id', (request, response) => {
     return employeesController.getById(request, response)
 })
 
-routesRest.post('/employees/:id', (request, response) => {
+routesRest.put('/employees/:id', (request, response) => {
     return employeesController.update(request, response)
 })
 
@@ -111,7 +111,7 @@ routesRest.get('/agenda/:id', (request, response) => {
     return agendaController.getById(request, response)
 })
 
-routesRest.post('/agenda/:id', (request, response) => {
+routesRest.put('/agenda/:id', (request, response) => {
     return agendaController.update(request, response)
 })
 

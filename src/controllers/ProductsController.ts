@@ -7,17 +7,12 @@ export class ProductsController {
         private produtosService: ProductsService,
     ){}
 
-    async show (request: Request, response: Response): Promise<void> {
-        const produtos = await this.produtosService.getAll()
-        return response.render('produtos', {request: request, produtos: produtos})
-    }
-
     async create (request: Request, response: Response): Promise<Response> {
         try {
             const { description, quantity, value } = request.body
             
             await this.produtosService.create({ description, quantity, value })
-            response.redirect('/produtos')
+
             return response.status(200).send()
 
         } catch(err){
@@ -61,7 +56,6 @@ export class ProductsController {
 
             await this.produtosService.update({ description, quantity, value}, id)
 
-            response.redirect('/produtos')
             return response.status(200).send()
 
         } catch(err){

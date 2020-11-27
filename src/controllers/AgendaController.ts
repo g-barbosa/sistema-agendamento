@@ -7,11 +7,6 @@ export class AgendaController {
         private service: AgendaService,
     ){}
 
-    async show (request: Request, response: Response): Promise<void> {
-        const agenda = await this.service.getAll()
-        return response.render('agenda', {request: request, agenda: agenda})
-    }
-
     async create (request: Request, response: Response): Promise<Response> {
         try {
             const { data, employeeId, customerId, serviceId, productId } = request.body
@@ -61,7 +56,6 @@ export class AgendaController {
 
             await this.service.update({ data }, id)
 
-            response.redirect('/agenda')
             return response.status(200).send()
 
         } catch(err){

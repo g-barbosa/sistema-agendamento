@@ -4,20 +4,15 @@ import { CustomersService  } from '../services/CustomersService';
 export class CustomersController {
 
     constructor(
-        private clienteService: CustomersService,
+        private customerService: CustomersService,
     ){}
-
-    async show (request: Request, response: Response): Promise<void> {
-        const clientes = await this.clienteService.getAll()
-        return response.render('clientes', {request: request, clientes: clientes})
-    }
 
     async create (request: Request, response: Response): Promise<Response> {
         try {
             const { name, phone, login, password } = request.body
             
-            await this.clienteService.create({ name, phone, login, password })
-            response.redirect('/clientes')
+            await this.customerService.create({ name, phone, login, password })
+
             return response.status(200).send()
 
         } catch(err){
@@ -29,9 +24,9 @@ export class CustomersController {
     async getAll (request: Request, response: Response): Promise<Response> {
         try {
 
-            const clientes = await this.clienteService.getAll()
+            const customers = await this.customerService.getAll()
 
-            return response.json(clientes)
+            return response.json(customers)
 
         } catch(err){
 
@@ -44,9 +39,9 @@ export class CustomersController {
 
             const { id } = request.params
 
-            const cliente = await this.clienteService.getById(id)
+            const customer = await this.customerService.getById(id)
 
-            return response.json(cliente)
+            return response.json(customer)
 
         } catch(err){
 
@@ -59,9 +54,8 @@ export class CustomersController {
             const { id } = request.params
             const { name, phone, login, password } = request.body
 
-            await this.clienteService.update({ name, phone, login, password}, id)
+            await this.customerService.update({ name, phone, login, password}, id)
 
-            response.redirect('/clientes')
             return response.status(200).send()
 
         } catch(err){
@@ -73,7 +67,7 @@ export class CustomersController {
         try {
             const { id } = request.params
 
-            await this.clienteService.delete(id)
+            await this.customerService.delete(id)
 
             return response.status(200).send()
 

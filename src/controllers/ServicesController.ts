@@ -7,17 +7,12 @@ export class ServicesController {
         private servicosService: ServicesService,
     ){}
 
-    async show (request: Request, response: Response): Promise<void> {
-        const servicos = await this.servicosService.getAll()
-        return response.render('servicos', {request: request, prices: servicos})
-    }
-
     async create (request: Request, response: Response): Promise<Response> {
         try {
             const { description, value } = request.body
 
             await this.servicosService.create({ description, value })
-            response.redirect('/servicos')
+
             return response.status(200).send()
 
         } catch(err){
@@ -61,7 +56,6 @@ export class ServicesController {
 
             await this.servicosService.update({ description, value}, id)
 
-            response.redirect('/servicos')
             return response.status(200).send()
 
         } catch(err){

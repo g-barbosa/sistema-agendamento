@@ -7,17 +7,12 @@ export class EmployeesController {
         private funcionarioService: EmployeesService,
     ){}
 
-    async show (request: Request, response: Response): Promise<void> {
-        const funcionarios = await this.funcionarioService.getAll()
-        return response.render('funcionarios', {request: request, funcionarios: funcionarios})
-    }
-
     async create (request: Request, response: Response): Promise<Response> {
         try {
             const { name, phone, login, password, starts, ends } = request.body
             
             await this.funcionarioService.create({ name, phone, login, password, starts, ends })
-            response.redirect('/funcionarios')
+
             return response.status(200).send()
 
         } catch(err){
@@ -61,7 +56,6 @@ export class EmployeesController {
 
             await this.funcionarioService.update({ name, phone, login, password, starts, ends }, id)
 
-            response.redirect('/funcionarios')
             return response.status(200).send()
 
         } catch(err){
