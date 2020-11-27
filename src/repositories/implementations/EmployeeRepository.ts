@@ -1,28 +1,28 @@
-import { Funcionario } from '../../domain/models/Funcionario'
+import { Employee } from '../../domain/models/Employee'
 import knex from '../../database/connection';
-import { IFuncionarioRepository } from '../IFuncionarioRepository';
+import { IFuncionarioRepository } from '../IEmployeeRepository';
 
 export class FuncionarioRepository implements IFuncionarioRepository {
 
-    async get(): Promise<Funcionario[]> {
-        const funcionarios : Funcionario[] = await knex('funcionarios')
+    async get(): Promise<Employee[]> {
+        const funcionarios : Employee[] = await knex('funcionarios')
 
         return funcionarios
     }
 
-    async getById(id: string): Promise<Funcionario> {
-        const funcionario : Funcionario = await knex('funcionarios').where('entityId', id).first()
+    async getById(id: string): Promise<Employee> {
+        const funcionario : Employee = await knex('funcionarios').where('entityId', id).first()
 
         return funcionario
     }
 
-    async create(funcionario: Funcionario): Promise<void> {
+    async create(funcionario: Employee): Promise<void> {
 
         await knex('funcionarios').insert(funcionario)
 
     }
 
-    async update(funcionario: Funcionario, id: string): Promise<void> {
+    async update(funcionario: Employee, id: string): Promise<void> {
 
         await knex('funcionarios').where('entityId', id).update({
             name: funcionario.name,

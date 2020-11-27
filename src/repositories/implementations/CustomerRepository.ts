@@ -1,28 +1,28 @@
-import { Cliente } from '../../domain/models/Cliente'
+import { Customer } from '../../domain/models/Customer'
 import knex from '../../database/connection';
-import { IClienteRepository } from '../IClienteRepository';
+import { IClienteRepository } from '../ICustomerRepository';
 
 export class ClienteRepository implements IClienteRepository {
 
-    async get(): Promise<Cliente[]> {
-        const clientes : Cliente[] = await knex('clientes')
+    async get(): Promise<Customer[]> {
+        const clientes : Customer[] = await knex('clientes')
 
         return clientes
     }
 
-    async getById(id: string): Promise<Cliente> {
-        const cliente : Cliente = await knex('clientes').where('entityId', id).first()
+    async getById(id: string): Promise<Customer> {
+        const cliente : Customer = await knex('clientes').where('entityId', id).first()
 
         return cliente
     }
 
-    async create(cliente: Cliente): Promise<void> {
+    async create(cliente: Customer): Promise<void> {
 
         await knex('clientes').insert(cliente)
 
     }
 
-    async update(cliente: Cliente, id: string): Promise<void> {
+    async update(cliente: Customer, id: string): Promise<void> {
 
         await knex('clientes').where('entityId', id).update({
             name: cliente.name,

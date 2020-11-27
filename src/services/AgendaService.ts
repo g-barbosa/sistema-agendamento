@@ -1,18 +1,18 @@
 import { IAgendaRepository } from '../repositories/IAgendaRepository'
-import { IClienteRepository } from '../repositories/IClienteRepository'
-import { IFuncionarioRepository } from '../repositories/IFuncionarioRepository'
-import { FuncionarioRepository } from '../repositories/implementations/FuncionarioRepository'
-import { ClienteRepository } from '../repositories/implementations/ClienteRepository'
-import { ServicosRepository } from '../repositories/implementations/ServicosRepository'
-import { ProdutosRepository } from '../repositories/implementations/ProdutosRepository'
-import { AgendamentoRepository } from '../repositories/implementations/AgendamentoRepository'
+import { IClienteRepository } from '../repositories/ICustomerRepository'
+import { IFuncionarioRepository } from '../repositories/IEmployeeRepository'
+import { FuncionarioRepository } from '../repositories/implementations/EmployeeRepository'
+import { ClienteRepository } from '../repositories/implementations/CustomerRepository'
+import { ServicosRepository } from '../repositories/implementations/ServiceRepository'
+import { ProdutosRepository } from '../repositories/implementations/ProductRepository'
+import { AgendamentoRepository } from '../repositories/implementations/SchedulingRepository'
 import { ICreateAgendaRequestDTO } from '../domain/DTO/AgendaDTO';
 import { Agenda } from '../domain/models/Agenda';
-import { Agendamento } from '../domain/models/Agendamento'
+import { Scheduling } from '../domain/models/Scheduling'
 import { ConvertDateTime } from '../utils/ConvertingTime'
-import { IServicosRepository } from '../repositories/IServicosRepository'
-import { IProdutosRepository } from '../repositories/IProdutosRepository'
-import { IAgendamentoRepository } from '../repositories/IAgendamentoRepository'
+import { IServicosRepository } from '../repositories/IServicesRepository'
+import { IProdutosRepository } from '../repositories/IProductRepository'
+import { IAgendamentoRepository } from '../repositories/ISchedulingRepository'
 
 export class AgendaService {
     private employeeRepository: IFuncionarioRepository
@@ -41,7 +41,7 @@ export class AgendaService {
 
         var [id] = await this.agendaRepository.create(newAgenda);
 
-        var agendamento = new Agendamento({idAgenda: id, idServicos: service.id, idProduto: product.id})
+        var agendamento = new Scheduling({idAgenda: id, idServicos: service.id, idProduto: product.id})
         await this.agendamento.create(agendamento)
 
     }

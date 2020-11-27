@@ -1,6 +1,6 @@
 import uuid from 'uuid-random';
 
-export class Agendamento {
+export class Scheduling {
     public readonly id!: number;
 
     public readonly entityId!: string;
@@ -8,7 +8,7 @@ export class Agendamento {
     public idServicos: number;
     public idAgenda: number;
 
-    constructor(props: Omit<Agendamento, 'id' | 'entityId'>, entityId?: string) {
+    constructor(props: Omit<Scheduling, 'id' | 'entityId'>, entityId?: string) {
 
         this.idProduto = props.idProduto;
         this.idServicos = props.idServicos

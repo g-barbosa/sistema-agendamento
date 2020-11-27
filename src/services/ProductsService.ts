@@ -1,6 +1,6 @@
-import { IProdutosRepository } from '../repositories/IProdutosRepository'
+import { IProdutosRepository } from '../repositories/IProductRepository'
 import { ICreateProductRequestDTO } from '../domain/DTO/ProductsDTO';
-import { Produto } from '../domain/models/Produto';
+import { Product } from '../domain/models/Product';
 
 export class ProductsService {
     
@@ -10,19 +10,19 @@ export class ProductsService {
 
     async create(ProdutoData: ICreateProductRequestDTO) {
 
-        const produto = new Produto(ProdutoData);
+        const produto = new Product(ProdutoData);
 
         await this.produtosRepository.create(produto);
     }
 
     async getAll() {
-        const Produtos: Produto[] = await this.produtosRepository.get()
+        const Produtos: Product[] = await this.produtosRepository.get()
 
         return Produtos
     }
 
     async getById(id: string) {
-        const produto: Produto = await this.produtosRepository.getByEntityId(id)
+        const produto: Product = await this.produtosRepository.getByEntityId(id)
 
         return produto
     }
@@ -32,7 +32,7 @@ export class ProductsService {
 
         if (!produtoAlreadyExists) throw new Error('item não encontrado.');
 
-        const produto = new Produto(ProdutoData);
+        const produto = new Product(ProdutoData);
 
         await this.produtosRepository.update(produto, id);
     }

@@ -1,6 +1,6 @@
-import { IFuncionarioRepository } from '../repositories/IFuncionarioRepository'
+import { IFuncionarioRepository } from '../repositories/IEmployeeRepository'
 import { ICreateEmployeeRequestDTO } from '../domain/DTO/EmployeesDTO';
-import { Funcionario } from '../domain/models/Funcionario';
+import { Employee } from '../domain/models/Employee';
 import { ConvertTime, GenNewDate } from '../utils/ConvertingTime'
 
 export class EmployeesService {
@@ -16,13 +16,13 @@ export class EmployeesService {
 
         funcionarioData.starts = starts
         funcionarioData.ends = ends
-        const funcionario = new Funcionario(funcionarioData);
+        const funcionario = new Employee(funcionarioData);
 
         await this.funcionarioRepository.create(funcionario);
     }
 
     async getAll() {
-        const funcionario: Funcionario[] = await this.funcionarioRepository.get()
+        const funcionario: Employee[] = await this.funcionarioRepository.get()
         funcionario.forEach(f => {
             f.starts = ConvertTime(f.starts, true)
             f.ends = ConvertTime(f.ends, true)
@@ -31,7 +31,7 @@ export class EmployeesService {
     }
 
     async getById(id: string) {
-        const funcionario: Funcionario = await this.funcionarioRepository.getById(id)
+        const funcionario: Employee = await this.funcionarioRepository.getById(id)
         funcionario.starts = ConvertTime(funcionario.starts, false)
         funcionario.ends = ConvertTime(funcionario.ends, false)
 
@@ -49,7 +49,7 @@ export class EmployeesService {
         funcionarioData.starts = starts
         funcionarioData.ends = ends
 
-        const funcionario = new Funcionario(funcionarioData);
+        const funcionario = new Employee(funcionarioData);
 
         await this.funcionarioRepository.update(funcionario, id);
     }

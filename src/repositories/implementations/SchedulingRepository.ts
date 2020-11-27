@@ -1,15 +1,15 @@
-import { Agendamento } from '../../domain/models/Agendamento'
+import { Scheduling } from '../../domain/models/Scheduling'
 import knex from '../../database/connection';
-import { IAgendamentoRepository } from '../IAgendamentoRepository';
+import { IAgendamentoRepository } from '../ISchedulingRepository';
 
 export class AgendamentoRepository implements IAgendamentoRepository {
 
-    async get(): Promise<Agendamento[]> {
+    async get(): Promise<Scheduling[]> {
         
         return await knex('agendamento')
     }
 
-    async create(agendamento: Agendamento): Promise<number[]> {
+    async create(agendamento: Scheduling): Promise<number[]> {
 
         return await knex('agendamento').insert(agendamento)
         

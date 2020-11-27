@@ -1,7 +1,7 @@
 import uuid from 'uuid-random';
 import { GenPassHash } from '../../utils/PasswordUtils'
 
-export class Cliente {
+export class Customer {
     public readonly id!: number;
 
     public readonly entityId!: string;
@@ -10,7 +10,7 @@ export class Cliente {
     public login: string;
     public password: string;
 
-    constructor(props: Omit<Cliente, 'id' | 'entityId'>, entityId?: string) {
+    constructor(props: Omit<Customer, 'id' | 'entityId'>, entityId?: string) {
 
         this.name = props.name;
         this.phone = props.phone;

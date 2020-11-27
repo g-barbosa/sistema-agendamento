@@ -1,6 +1,6 @@
-import { IClienteRepository } from '../repositories/IClienteRepository'
+import { IClienteRepository } from '../repositories/ICustomerRepository'
 import { ICreateCustomerRequestDTO } from '../domain/DTO/CustomersDTO';
-import { Cliente } from '../domain/models/Cliente';
+import { Customer } from '../domain/models/Customer';
 
 export class CustomersService {
     
@@ -10,19 +10,19 @@ export class CustomersService {
 
     async create(ClienteData: ICreateCustomerRequestDTO) {
 
-        const cliente = new Cliente(ClienteData);
+        const cliente = new Customer(ClienteData);
 
         await this.clienteRepository.create(cliente);
     }
 
     async getAll() {
-        const cliente: Cliente[] = await this.clienteRepository.get()
+        const cliente: Customer[] = await this.clienteRepository.get()
 
         return cliente
     }
 
     async getById(id: string) {
-        const cliente: Cliente = await this.clienteRepository.getById(id)
+        const cliente: Customer = await this.clienteRepository.getById(id)
 
         return cliente
     }
@@ -32,7 +32,7 @@ export class CustomersService {
 
         if (!clienteAlreadyExists) throw new Error('cliente não encontrado.');
 
-        const cliente = new Cliente(ClienteData);
+        const cliente = new Customer(ClienteData);
 
         await this.clienteRepository.update(cliente, id);
     }

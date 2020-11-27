@@ -1,7 +1,7 @@
-import { ServicosRepository } from './ServicosRepository'
-import { ProdutosRepository } from './ProdutosRepository'
-import { ClienteRepository } from './ClienteRepository'
-import { FuncionarioRepository } from './FuncionarioRepository'
+import { ServicosRepository } from './ServiceRepository'
+import { ProdutosRepository } from './ProductRepository'
+import { ClienteRepository } from './CustomerRepository'
+import { FuncionarioRepository } from './EmployeeRepository'
 import { AgendaRepository } from './AgendaRepository'
 import { AccountRepository } from './AccountRepository'
 

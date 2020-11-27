@@ -1,9 +1,9 @@
-import { IServicosRepository } from '../repositories/IServicosRepository'
-import { IProdutosRepository } from '../repositories/IProdutosRepository'
-import { IAgendamentoRepository } from '../repositories/IAgendamentoRepository'
-import { ServicosRepository } from '../repositories/implementations/ServicosRepository'
-import { ProdutosRepository } from '../repositories/implementations/ProdutosRepository'
-import { AgendamentoRepository } from '../repositories/implementations/AgendamentoRepository'
+import { IServicosRepository } from '../repositories/IServicesRepository'
+import { IProdutosRepository } from '../repositories/IProductRepository'
+import { IAgendamentoRepository } from '../repositories/ISchedulingRepository'
+import { ServicosRepository } from '../repositories/implementations/ServiceRepository'
+import { ProdutosRepository } from '../repositories/implementations/ProductRepository'
+import { AgendamentoRepository } from '../repositories/implementations/SchedulingRepository'
 
 export class FinancesService {
     private services: IServicosRepository
