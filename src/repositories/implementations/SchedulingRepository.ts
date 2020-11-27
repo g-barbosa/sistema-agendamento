@@ -1,8 +1,8 @@
 import { Scheduling } from '../../domain/models/Scheduling'
 import knex from '../../database/connection';
-import { IAgendamentoRepository } from '../ISchedulingRepository';
+import { ISchedulingRepository } from '../ISchedulingRepository';
 
-export class AgendamentoRepository implements IAgendamentoRepository {
+export class SchedulingRepository implements ISchedulingRepository {
 
     async get(): Promise<Scheduling[]> {
         

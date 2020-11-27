@@ -1,8 +1,8 @@
 import { Employee } from '../../domain/models/Employee'
 import knex from '../../database/connection';
-import { IFuncionarioRepository } from '../IEmployeeRepository';
+import { IEmployeeRepository } from '../IEmployeeRepository';
 
-export class FuncionarioRepository implements IFuncionarioRepository {
+export class EmployeeRepository implements IEmployeeRepository {
 
     async get(): Promise<Employee[]> {
         const funcionarios : Employee[] = await knex('funcionarios')

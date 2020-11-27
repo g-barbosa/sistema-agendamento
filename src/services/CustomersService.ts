@@ -1,11 +1,11 @@
-import { IClienteRepository } from '../repositories/ICustomerRepository'
+import { ICustomerRepository } from '../repositories/ICustomerRepository'
 import { ICreateCustomerRequestDTO } from '../domain/DTO/CustomersDTO';
 import { Customer } from '../domain/models/Customer';
 
 export class CustomersService {
     
     constructor ( 
-        private clienteRepository: IClienteRepository
+        private clienteRepository: ICustomerRepository
         ){}
 
     async create(ClienteData: ICreateCustomerRequestDTO) {

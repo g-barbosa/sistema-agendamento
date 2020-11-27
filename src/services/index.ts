@@ -1,9 +1,9 @@
 import {
     agendaRepository,
-    clienteRepository,
-    funcionarioRepository,
-    servicosRepository,
-    produtosRepository,
+    customerRepository,
+    employeeRepository,
+    serviceRepository,
+    productsRepository,
     accountRepository } from '../repositories/implementations'
     
 import { ServicesService } from './ServicesService'
@@ -15,10 +15,10 @@ import { FinancesService } from './FinancesService'
 import { AccountService } from './AccountService'
 
 
-const servicesService = new ServicesService(servicosRepository)
-const productsService = new ProductsService(produtosRepository)
-const customersService = new CustomersService(clienteRepository)
-const employeesService = new EmployeesService(funcionarioRepository)
+const servicesService = new ServicesService(serviceRepository)
+const productsService = new ProductsService(productsRepository)
+const customersService = new CustomersService(customerRepository)
+const employeesService = new EmployeesService(employeeRepository)
 const agendaService = new AgendaService(agendaRepository)
 const financesService = new FinancesService()
 const accountService = new AccountService(accountRepository)

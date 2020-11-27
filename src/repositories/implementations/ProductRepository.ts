@@ -1,8 +1,8 @@
 import { Product } from '../../domain/models/Product'
 import knex from '../../database/connection';
-import { IProdutosRepository } from '../IProductRepository';
+import { IProductRepository } from '../IProductRepository';
 
-export class ProdutosRepository implements IProdutosRepository {
+export class ProductRepository implements IProductRepository {
 
     async get(): Promise<Product[]> {
         const produtos : Product[] = await knex('produtos')

@@ -1,11 +1,11 @@
-import { IProdutosRepository } from '../repositories/IProductRepository'
+import { IProductRepository } from '../repositories/IProductRepository'
 import { ICreateProductRequestDTO } from '../domain/DTO/ProductsDTO';
 import { Product } from '../domain/models/Product';
 
 export class ProductsService {
     
     constructor ( 
-        private produtosRepository: IProdutosRepository
+        private produtosRepository: IProductRepository
         ){}
 
     async create(ProdutoData: ICreateProductRequestDTO) {

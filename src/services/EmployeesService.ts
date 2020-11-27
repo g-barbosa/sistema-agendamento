@@ -1,4 +1,4 @@
-import { IFuncionarioRepository } from '../repositories/IEmployeeRepository'
+import { IEmployeeRepository } from '../repositories/IEmployeeRepository'
 import { ICreateEmployeeRequestDTO } from '../domain/DTO/EmployeesDTO';
 import { Employee } from '../domain/models/Employee';
 import { ConvertTime, GenNewDate } from '../utils/ConvertingTime'
@@ -6,7 +6,7 @@ import { ConvertTime, GenNewDate } from '../utils/ConvertingTime'
 export class EmployeesService {
     
     constructor ( 
-        private funcionarioRepository: IFuncionarioRepository
+        private funcionarioRepository: IEmployeeRepository
         ){}
 
     async create(funcionarioData: ICreateEmployeeRequestDTO) {
