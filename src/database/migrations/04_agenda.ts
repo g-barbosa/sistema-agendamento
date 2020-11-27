@@ -6,8 +6,8 @@ export async function up(knex: Knex): Promise<any> {
         table.increments('id').primary();
         table.uuid('entityId').notNullable();
         table.dateTime('data').notNullable();
-        table.integer('employeeId').unsigned().references('id').inTable('funcionarios')
-        table.integer('customerId').unsigned().references('id').inTable('clientes')
+        table.integer('employeeId').unsigned().references('id').inTable('employees')
+        table.integer('customerId').unsigned().references('id').inTable('customers')
     })
 }
 
