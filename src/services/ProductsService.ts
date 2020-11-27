@@ -5,43 +5,43 @@ import { Product } from '../domain/models/Product';
 export class ProductsService {
     
     constructor ( 
-        private produtosRepository: IProductRepository
+        private productsRepository: IProductRepository
         ){}
 
-    async create(ProdutoData: ICreateProductRequestDTO) {
+    async create(productData: ICreateProductRequestDTO) {
 
-        const produto = new Product(ProdutoData);
+        const product = new Product(productData);
 
-        await this.produtosRepository.create(produto);
+        await this.productsRepository.create(product);
     }
 
     async getAll() {
-        const Produtos: Product[] = await this.produtosRepository.get()
+        const products: Product[] = await this.productsRepository.get()
 
-        return Produtos
+        return products
     }
 
     async getById(id: string) {
-        const produto: Product = await this.produtosRepository.getByEntityId(id)
+        const product: Product = await this.productsRepository.getByEntityId(id)
 
-        return produto
+        return product
     }
 
-    async update(ProdutoData: ICreateProductRequestDTO, id: string) {
-        const produtoAlreadyExists = await this.produtosRepository.getByEntityId(id);
+    async update(productData: ICreateProductRequestDTO, id: string) {
+        const productAlreadyExists = await this.productsRepository.getByEntityId(id);
 
-        if (!produtoAlreadyExists) throw new Error('item não encontrado.');
+        if (!productAlreadyExists) throw new Error('item não encontrado.');
 
-        const produto = new Product(ProdutoData);
+        const product = new Product(productData);
 
-        await this.produtosRepository.update(produto, id);
+        await this.productsRepository.update(product, id);
     }
 
     async delete(id: string) {
-        const produtoAlreadyExists = await this.produtosRepository.getByEntityId(id);
+        const productAlreadyExists = await this.productsRepository.getByEntityId(id);
 
-        if (!produtoAlreadyExists) throw new Error('item não encontrado.');
+        if (!productAlreadyExists) throw new Error('item não encontrado.');
 
-        await this.produtosRepository.delete(id);
+        await this.productsRepository.delete(id);
     }
 }

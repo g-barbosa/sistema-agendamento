@@ -7,42 +7,42 @@ export class AgendaRepository implements IAgendaRepository {
 
     async get(): Promise<Agenda[]> {
 
-        const agendas: Agenda[] = await knex('agendamento')
+        const agendas: Agenda[] = await knex('scheduling')
         .select([
-            'agendamento.entityId as id',
+            'scheduling.entityId as id',
             'agenda.data as data',
-            'clientes.entityId as customerId',           
-            'funcionarios.name as employeeName',
-            'clientes.name as customerName',
-            'produtos.description as product',
-            'servicos.description as service'
+            'customers.entityId as customerId',           
+            'employees.name as employeeName',
+            'customers.name as customerName',
+            'products.description as product',
+            'services.description as service'
         ])
-        .innerJoin('agenda', 'agenda.id', 'agendamento.idAgenda')
-        .innerJoin('produtos', 'produtos.id', 'agendamento.idProduto')
-        .innerJoin('servicos', 'servicos.id', 'agendamento.idServicos')
-        .innerJoin('funcionarios', 'funcionarios.id', 'agenda.employeeId')
-        .innerJoin('clientes', 'clientes.id', 'agenda.customerId')
+        .innerJoin('agenda', 'agenda.id', 'scheduling.idAgenda')
+        .innerJoin('products', 'products.id', 'scheduling.idProduto')
+        .innerJoin('services', 'services.id', 'scheduling.idServicos')
+        .innerJoin('employees', 'employees.id', 'agenda.employeeId')
+        .innerJoin('customers', 'customers.id', 'agenda.customerId')
 
         return agendas
     }
 
     async getById(id: string): Promise<Agenda> {
-        const agenda : Agenda = await knex('agendamento')
+        const agenda : Agenda = await knex('scheduling')
         .select([
-            'agendamento.entityId as id',
+            'scheduling.entityId as id',
             'agenda.data as data',
-            'clientes.entityId as customerId',           
-            'funcionarios.name as employeeName',
-            'clientes.name as customerName',
-            'produtos.description as product',
-            'servicos.description as service'
+            'customers.entityId as customerId',           
+            'employees.name as employeeName',
+            'customers.name as customerName',
+            'products.description as product',
+            'services.description as service'
         ])
-        .innerJoin('agenda', 'agenda.id', 'agendamento.idAgenda')
-        .innerJoin('produtos', 'produtos.id', 'agendamento.idProduto')
-        .innerJoin('servicos', 'servicos.id', 'agendamento.idServicos')
-        .innerJoin('funcionarios', 'funcionarios.id', 'agenda.employeeId')
-        .innerJoin('clientes', 'clientes.id', 'agenda.customerId')
-        .where('agendamento.entityId', id).first()
+        .innerJoin('agenda', 'agenda.id', 'scheduling.idAgenda')
+        .innerJoin('produtos', 'produtos.id', 'scheduling.idProduto')
+        .innerJoin('services', 'services.id', 'scheduling.idServicos')
+        .innerJoin('employees', 'employees.id', 'agenda.employeeId')
+        .innerJoin('customers', 'customers.id', 'agenda.customerId')
+        .where('scheduling.entityId', id).first()
 
         return agenda
     }
@@ -62,7 +62,7 @@ export class AgendaRepository implements IAgendaRepository {
 
     async delete(id: string): Promise<void> {
 
-        await knex('agendamento').where('entityId', id).del()
+        await knex('scheduling').where('entityId', id).del()
 
     }
 }

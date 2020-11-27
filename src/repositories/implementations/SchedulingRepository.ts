@@ -6,18 +6,18 @@ export class SchedulingRepository implements ISchedulingRepository {
 
     async get(): Promise<Scheduling[]> {
         
-        return await knex('agendamento')
+        return await knex('scheduling')
     }
 
-    async create(agendamento: Scheduling): Promise<number[]> {
+    async create(scheduling: Scheduling): Promise<number[]> {
 
-        return await knex('agendamento').insert(agendamento)
+        return await knex('scheduling').insert(scheduling)
         
     }
 
     async delete(id: string): Promise<void> {
 
-        await knex('agendamento').where('entityId', id).del()
+        await knex('scheduling').where('entityId', id).del()
 
     }
 }

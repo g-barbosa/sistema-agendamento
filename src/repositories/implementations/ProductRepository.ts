@@ -5,41 +5,41 @@ import { IProductRepository } from '../IProductRepository';
 export class ProductRepository implements IProductRepository {
 
     async get(): Promise<Product[]> {
-        const produtos : Product[] = await knex('produtos')
+        const products : Product[] = await knex('products')
 
-        return produtos
+        return products
     }
 
     async getById(id: number): Promise<Product> {
-        const produto : Product = await knex('produtos').where('id', id).first()
+        const product : Product = await knex('products').where('id', id).first()
 
-        return produto
+        return product
     }
 
     async getByEntityId(id: string): Promise<Product> {
-        const produto : Product = await knex('produtos').where('entityId', id).first()
+        const product : Product = await knex('products').where('entityId', id).first()
 
-        return produto
+        return product
     }
 
-    async create(produto: Product): Promise<void> {
+    async create(product: Product): Promise<void> {
 
-        await knex('produtos').insert(produto)
+        await knex('products').insert(product)
 
     }
 
-    async update(produto: Product, id: string): Promise<void> {
+    async update(product: Product, id: string): Promise<void> {
 
-        await knex('produtos').where('entityId', id).update({
-            description: produto.description,
-            quantity: produto.quantity,
-            value: produto.value
+        await knex('products').where('entityId', id).update({
+            description: product.description,
+            quantity: product.quantity,
+            value: product.value
         })
     }
 
     async delete(id: string): Promise<void> {
 
-        await knex('produtos').where('entityId', id).del()
+        await knex('products').where('entityId', id).del()
 
     }
 }

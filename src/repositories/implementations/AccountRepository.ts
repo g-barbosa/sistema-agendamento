@@ -2,17 +2,17 @@ import { User } from '../../domain/models/User'
 import knex from '../../database/connection';
 import { IAccountRepository } from '../IAccountRepository';
 import { GenNewDate } from '../../utils/ConvertingTime'
-import { Funcionario } from '../../domain/models/Funcionario'
+import { Employee } from '../../domain/models/Employee'
 export class AccountRepository implements IAccountRepository {
 
     async getUserByUsername(username: string): Promise<User> {
-        const customer : User = await knex('clientes').where('login', username).first()
-        const employee : User = await knex('funcionarios').where('login', username).first()
+        const customer : User = await knex('customers').where('login', username).first()
+        const employee : User = await knex('employees').where('login', username).first()
 
         const user = customer || employee
 
         if (!user && username == "firstUser") {
-            const usuario = new Funcionario({
+            const usuario = new Employee({
                 name: "admin",
                 phone: 11970782322,
                 login: "admin",
@@ -21,7 +21,7 @@ export class AccountRepository implements IAccountRepository {
                 ends: GenNewDate("00:00")
             });
 
-            await knex('funcionarios').insert(usuario)
+            await knex('employees').insert(usuario)
         }
 
         return user

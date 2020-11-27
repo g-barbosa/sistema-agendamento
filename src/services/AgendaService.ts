@@ -1,39 +1,39 @@
 import { IAgendaRepository } from '../repositories/IAgendaRepository'
-import { IClienteRepository } from '../repositories/ICustomerRepository'
-import { IFuncionarioRepository } from '../repositories/IEmployeeRepository'
-import { FuncionarioRepository } from '../repositories/implementations/EmployeeRepository'
-import { ClienteRepository } from '../repositories/implementations/CustomerRepository'
-import { ServicosRepository } from '../repositories/implementations/ServiceRepository'
-import { ProdutosRepository } from '../repositories/implementations/ProductRepository'
-import { AgendamentoRepository } from '../repositories/implementations/SchedulingRepository'
+import { ICustomerRepository } from '../repositories/ICustomerRepository'
+import { IEmployeeRepository } from '../repositories/IEmployeeRepository'
+import { EmployeeRepository } from '../repositories/implementations/EmployeeRepository'
+import { CustomerRepository } from '../repositories/implementations/CustomerRepository'
+import { ServiceRepository } from '../repositories/implementations/ServiceRepository'
+import { ProductRepository } from '../repositories/implementations/ProductRepository'
+import { SchedulingRepository } from '../repositories/implementations/SchedulingRepository'
 import { ICreateAgendaRequestDTO } from '../domain/DTO/AgendaDTO';
 import { Agenda } from '../domain/models/Agenda';
 import { Scheduling } from '../domain/models/Scheduling'
 import { ConvertDateTime } from '../utils/ConvertingTime'
-import { IServicosRepository } from '../repositories/IServicesRepository'
-import { IProdutosRepository } from '../repositories/IProductRepository'
-import { IAgendamentoRepository } from '../repositories/ISchedulingRepository'
+import { IServicesRepository } from '../repositories/IServicesRepository'
+import { IProductRepository } from '../repositories/IProductRepository'
+import { ISchedulingRepository } from '../repositories/ISchedulingRepository'
 
 export class AgendaService {
-    private employeeRepository: IFuncionarioRepository
-    private customerRepository: IClienteRepository
-    private servicosRepository: IServicosRepository
-    private productsRepository: IProdutosRepository
-    private agendamento: IAgendamentoRepository
+    private employeeRepository: IEmployeeRepository
+    private customerRepository: ICustomerRepository
+    private servicesRepository: IServicesRepository
+    private productsRepository: IProductRepository
+    private agendamento: ISchedulingRepository
     constructor ( 
         private agendaRepository: IAgendaRepository
     ){
-        this.employeeRepository = new FuncionarioRepository
-        this.customerRepository = new ClienteRepository
-        this.servicosRepository = new ServicosRepository
-        this.productsRepository = new ProdutosRepository
-        this.agendamento = new AgendamentoRepository
+        this.employeeRepository = new EmployeeRepository
+        this.customerRepository = new CustomerRepository
+        this.servicesRepository = new ServiceRepository
+        this.productsRepository = new ProductRepository
+        this.agendamento = new SchedulingRepository
     }
 
     async create(data: ICreateAgendaRequestDTO) {
         var customer = await this.customerRepository.getById(data.customerId!)
         var employee = await this.employeeRepository.getById(data.employeeId!)
-        var service = await this.servicosRepository.getByEntityId(data.serviceId!)
+        var service = await this.servicesRepository.getByEntityId(data.serviceId!)
         var product = await this.productsRepository.getByEntityId(data.productId!)
 
         var date = new Date(parseInt(data.data)).toISOString().replace(/T/, ' ').replace(/\..+/, '')
@@ -41,8 +41,8 @@ export class AgendaService {
 
         var [id] = await this.agendaRepository.create(newAgenda);
 
-        var agendamento = new Scheduling({idAgenda: id, idServicos: service.id, idProduto: product.id})
-        await this.agendamento.create(agendamento)
+        var scheduling = new Scheduling({idAgenda: id, idServicos: service.id, idProduto: product.id})
+        await this.agendamento.create(scheduling)
 
     }
 

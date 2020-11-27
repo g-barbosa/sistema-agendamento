@@ -6,59 +6,59 @@ import { ConvertTime, GenNewDate } from '../utils/ConvertingTime'
 export class EmployeesService {
     
     constructor ( 
-        private funcionarioRepository: IEmployeeRepository
+        private employeeRepository: IEmployeeRepository
         ){}
 
-    async create(funcionarioData: ICreateEmployeeRequestDTO) {
+    async create(employeeData: ICreateEmployeeRequestDTO) {
 
-        var starts = GenNewDate(funcionarioData.starts)
-        var ends = GenNewDate(funcionarioData.ends)
+        var starts = GenNewDate(employeeData.starts)
+        var ends = GenNewDate(employeeData.ends)
 
-        funcionarioData.starts = starts
-        funcionarioData.ends = ends
-        const funcionario = new Employee(funcionarioData);
+        employeeData.starts = starts
+        employeeData.ends = ends
+        const employee = new Employee(employeeData);
 
-        await this.funcionarioRepository.create(funcionario);
+        await this.employeeRepository.create(employee);
     }
 
     async getAll() {
-        const funcionario: Employee[] = await this.funcionarioRepository.get()
-        funcionario.forEach(f => {
+        const employee: Employee[] = await this.employeeRepository.get()
+        employee.forEach(f => {
             f.starts = ConvertTime(f.starts, true)
             f.ends = ConvertTime(f.ends, true)
         })
-        return funcionario
+        return employee
     }
 
     async getById(id: string) {
-        const funcionario: Employee = await this.funcionarioRepository.getById(id)
-        funcionario.starts = ConvertTime(funcionario.starts, false)
-        funcionario.ends = ConvertTime(funcionario.ends, false)
+        const employee: Employee = await this.employeeRepository.getById(id)
+        employee.starts = ConvertTime(employee.starts, false)
+        employee.ends = ConvertTime(employee.ends, false)
 
-        return funcionario
+        return employee
     }
 
-    async update(funcionarioData: ICreateEmployeeRequestDTO, id: string) {
-        const clienteAlreadyExists = await this.funcionarioRepository.getById(id);
+    async update(employeeData: ICreateEmployeeRequestDTO, id: string) {
+        const clienteAlreadyExists = await this.employeeRepository.getById(id);
 
-        if (!clienteAlreadyExists) throw new Error('funcionario não encontrado.');
+        if (!clienteAlreadyExists) throw new Error('employee não encontrado.');
 
-        var starts = GenNewDate(funcionarioData.starts)
-        var ends = GenNewDate(funcionarioData.ends)
+        var starts = GenNewDate(employeeData.starts)
+        var ends = GenNewDate(employeeData.ends)
 
-        funcionarioData.starts = starts
-        funcionarioData.ends = ends
+        employeeData.starts = starts
+        employeeData.ends = ends
 
-        const funcionario = new Employee(funcionarioData);
+        const employee = new Employee(employeeData);
 
-        await this.funcionarioRepository.update(funcionario, id);
+        await this.employeeRepository.update(employee, id);
     }
 
     async delete(id: string) {
-        const clienteAlreadyExists = await this.funcionarioRepository.getById(id);
+        const clienteAlreadyExists = await this.employeeRepository.getById(id);
 
-        if (!clienteAlreadyExists) throw new Error('funcionario não encontrado.');
+        if (!clienteAlreadyExists) throw new Error('employee não encontrado.');
 
-        await this.funcionarioRepository.delete(id);
+        await this.employeeRepository.delete(id);
     }
 }

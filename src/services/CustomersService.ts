@@ -5,43 +5,43 @@ import { Customer } from '../domain/models/Customer';
 export class CustomersService {
     
     constructor ( 
-        private clienteRepository: ICustomerRepository
+        private customerRepository: ICustomerRepository
         ){}
 
-    async create(ClienteData: ICreateCustomerRequestDTO) {
+    async create(customerData: ICreateCustomerRequestDTO) {
 
-        const cliente = new Customer(ClienteData);
+        const customer = new Customer(customerData);
 
-        await this.clienteRepository.create(cliente);
+        await this.customerRepository.create(customer);
     }
 
     async getAll() {
-        const cliente: Customer[] = await this.clienteRepository.get()
+        const customer: Customer[] = await this.customerRepository.get()
 
-        return cliente
+        return customer
     }
 
     async getById(id: string) {
-        const cliente: Customer = await this.clienteRepository.getById(id)
+        const customer: Customer = await this.customerRepository.getById(id)
 
-        return cliente
+        return customer
     }
 
-    async update(ClienteData: ICreateCustomerRequestDTO, id: string) {
-        const clienteAlreadyExists = await this.clienteRepository.getById(id);
+    async update(customerData: ICreateCustomerRequestDTO, id: string) {
+        const customerAlreadyExists = await this.customerRepository.getById(id);
 
-        if (!clienteAlreadyExists) throw new Error('cliente não encontrado.');
+        if (!customerAlreadyExists) throw new Error('customer não encontrado.');
 
-        const cliente = new Customer(ClienteData);
+        const customer = new Customer(customerData);
 
-        await this.clienteRepository.update(cliente, id);
+        await this.customerRepository.update(customer, id);
     }
 
     async delete(id: string) {
-        const clienteAlreadyExists = await this.clienteRepository.getById(id);
+        const customerAlreadyExists = await this.customerRepository.getById(id);
 
-        if (!clienteAlreadyExists) throw new Error('cliente não encontrado.');
+        if (!customerAlreadyExists) throw new Error('customer não encontrado.');
 
-        await this.clienteRepository.delete(id);
+        await this.customerRepository.delete(id);
     }
 }

@@ -5,36 +5,36 @@ import { ICustomerRepository } from '../ICustomerRepository';
 export class CustomerRepository implements ICustomerRepository {
 
     async get(): Promise<Customer[]> {
-        const clientes : Customer[] = await knex('clientes')
+        const customers : Customer[] = await knex('customers')
 
-        return clientes
+        return customers
     }
 
     async getById(id: string): Promise<Customer> {
-        const cliente : Customer = await knex('clientes').where('entityId', id).first()
+        const customer : Customer = await knex('customers').where('entityId', id).first()
 
-        return cliente
+        return customer
     }
 
-    async create(cliente: Customer): Promise<void> {
+    async create(customer: Customer): Promise<void> {
 
-        await knex('clientes').insert(cliente)
+        await knex('customers').insert(customer)
 
     }
 
-    async update(cliente: Customer, id: string): Promise<void> {
+    async update(customer: Customer, id: string): Promise<void> {
 
-        await knex('clientes').where('entityId', id).update({
-            name: cliente.name,
-            phone: cliente.phone,
-            login: cliente.login,
-            password: cliente.password
+        await knex('customers').where('entityId', id).update({
+            name: customer.name,
+            phone: customer.phone,
+            login: customer.login,
+            password: customer.password
         })
     }
 
     async delete(id: string): Promise<void> {
 
-        await knex('clientes').where('entityId', id).del()
+        await knex('customers').where('entityId', id).del()
 
     }
 }

@@ -5,40 +5,40 @@ import { IServicesRepository } from "../IServicesRepository";
 export class ServiceRepository implements IServicesRepository {
 
     async get(): Promise<Service[]> {
-        const servicos : Service[] = await knex('servicos')
+        const services : Service[] = await knex('services')
 
-        return servicos
+        return services
     }
 
     async getById(id: number): Promise<Service> {
-        const servico : Service = await knex('servicos').where('id', id).first()
+        const service : Service = await knex('services').where('id', id).first()
         
-        return servico
+        return service
     }
 
     async getByEntityId(id: string): Promise<Service> {
-        const servico : Service = await knex('servicos').where('entityId', id).first()
+        const service : Service = await knex('services').where('entityId', id).first()
 
-        return servico
+        return service
     }
 
-    async create(servico: Service): Promise<void> {
+    async create(service: Service): Promise<void> {
 
-        await knex('servicos').insert(servico)
+        await knex('services').insert(service)
 
     }
 
-    async update(servico: Service, id: string): Promise<void> {
+    async update(service: Service, id: string): Promise<void> {
 
-        await knex('servicos').where('entityId', id).update({
-            description: servico.description,
-            value: servico.value,
+        await knex('services').where('entityId', id).update({
+            description: service.description,
+            value: service.value,
         })
     }
 
     async delete(id: string): Promise<void> {
 
-        await knex('servicos').where('entityId', id).del()
+        await knex('services').where('entityId', id).del()
 
     }
 }

@@ -5,38 +5,38 @@ import { IEmployeeRepository } from '../IEmployeeRepository';
 export class EmployeeRepository implements IEmployeeRepository {
 
     async get(): Promise<Employee[]> {
-        const funcionarios : Employee[] = await knex('funcionarios')
+        const employees : Employee[] = await knex('employees')
 
-        return funcionarios
+        return employees
     }
 
     async getById(id: string): Promise<Employee> {
-        const funcionario : Employee = await knex('funcionarios').where('entityId', id).first()
+        const employee : Employee = await knex('employees').where('entityId', id).first()
 
-        return funcionario
+        return employee
     }
 
-    async create(funcionario: Employee): Promise<void> {
+    async create(employee: Employee): Promise<void> {
 
-        await knex('funcionarios').insert(funcionario)
+        await knex('employees').insert(employee)
 
     }
 
-    async update(funcionario: Employee, id: string): Promise<void> {
+    async update(employee: Employee, id: string): Promise<void> {
 
-        await knex('funcionarios').where('entityId', id).update({
-            name: funcionario.name,
-            phone: funcionario.phone,
-            login: funcionario.login,
-            password: funcionario.password,
-            starts: funcionario.starts,
-            ends: funcionario.ends
+        await knex('employees').where('entityId', id).update({
+            name: employee.name,
+            phone: employee.phone,
+            login: employee.login,
+            password: employee.password,
+            starts: employee.starts,
+            ends: employee.ends
         })
     }
 
     async delete(id: string): Promise<void> {
 
-        await knex('funcionarios').where('entityId', id).del()
+        await knex('employees').where('entityId', id).del()
 
     }
 }

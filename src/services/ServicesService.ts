@@ -5,43 +5,43 @@ import { Service } from '../domain/models/Service';
 export class ServicesService {
     
     constructor ( 
-        private servicosRepository: IServicesRepository
+        private servicesRepository: IServicesRepository
         ){}
 
     async create(serviceData: ICreateServiceRequestDTO) {
 
-        const servico = new Service(serviceData);
+        const service = new Service(serviceData);
 
-        await this.servicosRepository.create(servico);
+        await this.servicesRepository.create(service);
     }
 
     async getAll() {
-        const servicos: Service[] = await this.servicosRepository.get()
+        const services: Service[] = await this.servicesRepository.get()
 
-        return servicos
+        return services
     }
 
     async getById(id: string) {
-        const servico: Service = await this.servicosRepository.getByEntityId(id)
+        const service: Service = await this.servicesRepository.getByEntityId(id)
 
-        return servico
+        return service
     }
 
     async update(serviceData: ICreateServiceRequestDTO, id: string) {
-        const serviceAlreadyExists = await this.servicosRepository.getByEntityId(id);
+        const serviceAlreadyExists = await this.servicesRepository.getByEntityId(id);
 
         if (!serviceAlreadyExists) throw new Error('Serviço não encontrado.');
 
-        const servico = new Service(serviceData);
+        const service = new Service(serviceData);
 
-        await this.servicosRepository.update(servico, id);
+        await this.servicesRepository.update(service, id);
     }
 
     async delete(id: string) {
-        const serviceAlreadyExists = await this.servicosRepository.getByEntityId(id);
+        const serviceAlreadyExists = await this.servicesRepository.getByEntityId(id);
 
         if (!serviceAlreadyExists) throw new Error('Serviço não encontrado.');
 
-        await this.servicosRepository.delete(id);
+        await this.servicesRepository.delete(id);
     }
 }
