@@ -4,14 +4,14 @@ import { EmployeesService  } from '../services/EmployeesService';
 export class EmployeesController {
 
     constructor(
-        private funcionarioService: EmployeesService,
+        private employeeService: EmployeesService,
     ){}
 
     async create (request: Request, response: Response): Promise<Response> {
         try {
             const { name, phone, login, password, starts, ends } = request.body
             
-            await this.funcionarioService.create({ name, phone, login, password, starts, ends })
+            await this.employeeService.create({ name, phone, login, password, starts, ends })
 
             return response.status(200).send()
 
@@ -24,9 +24,9 @@ export class EmployeesController {
     async getAll (request: Request, response: Response): Promise<Response> {
         try {
 
-            const funcionario = await this.funcionarioService.getAll()
+            const employee = await this.employeeService.getAll()
 
-            return response.json(funcionario)
+            return response.json(employee)
 
         } catch(err){
 
@@ -39,9 +39,9 @@ export class EmployeesController {
 
             const { id } = request.params
 
-            const funcionario = await this.funcionarioService.getById(id)
+            const employee = await this.employeeService.getById(id)
 
-            return response.json(funcionario)
+            return response.json(employee)
 
         } catch(err){
 
@@ -54,7 +54,7 @@ export class EmployeesController {
             const { id } = request.params
             const { name, phone, login, password, starts, ends } = request.body
 
-            await this.funcionarioService.update({ name, phone, login, password, starts, ends }, id)
+            await this.employeeService.update({ name, phone, login, password, starts, ends }, id)
 
             return response.status(200).send()
 
@@ -67,7 +67,7 @@ export class EmployeesController {
         try {
             const { id } = request.params
 
-            await this.funcionarioService.delete(id)
+            await this.employeeService.delete(id)
 
             return response.status(200).send()
 

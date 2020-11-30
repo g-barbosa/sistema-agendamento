@@ -18,8 +18,8 @@ export class AgendaRepository implements IAgendaRepository {
             'services.description as service'
         ])
         .innerJoin('agenda', 'agenda.id', 'scheduling.idAgenda')
-        .innerJoin('products', 'products.id', 'scheduling.idProduto')
-        .innerJoin('services', 'services.id', 'scheduling.idServicos')
+        .innerJoin('products', 'products.id', 'scheduling.idProduct')
+        .innerJoin('services', 'services.id', 'scheduling.idService')
         .innerJoin('employees', 'employees.id', 'agenda.employeeId')
         .innerJoin('customers', 'customers.id', 'agenda.customerId')
 
@@ -38,8 +38,8 @@ export class AgendaRepository implements IAgendaRepository {
             'services.description as service'
         ])
         .innerJoin('agenda', 'agenda.id', 'scheduling.idAgenda')
-        .innerJoin('produtos', 'produtos.id', 'scheduling.idProduto')
-        .innerJoin('services', 'services.id', 'scheduling.idServicos')
+        .innerJoin('products', 'products.id', 'scheduling.idProduct')
+        .innerJoin('services', 'services.id', 'scheduling.idService')
         .innerJoin('employees', 'employees.id', 'agenda.employeeId')
         .innerJoin('customers', 'customers.id', 'agenda.customerId')
         .where('scheduling.entityId', id).first()

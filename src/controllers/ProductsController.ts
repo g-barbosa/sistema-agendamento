@@ -4,14 +4,14 @@ import { ProductsService  } from '../services/ProductsService';
 export class ProductsController {
 
     constructor(
-        private produtosService: ProductsService,
+        private productService: ProductsService,
     ){}
 
     async create (request: Request, response: Response): Promise<Response> {
         try {
             const { description, quantity, value } = request.body
             
-            await this.produtosService.create({ description, quantity, value })
+            await this.productService.create({ description, quantity, value })
 
             return response.status(200).send()
 
@@ -24,9 +24,9 @@ export class ProductsController {
     async getAll (request: Request, response: Response): Promise<Response> {
         try {
 
-            const produtos = await this.produtosService.getAll()
+            const product = await this.productService.getAll()
 
-            return response.json(produtos)
+            return response.json(product)
 
         } catch(err){
 
@@ -39,9 +39,9 @@ export class ProductsController {
 
             const { id } = request.params
 
-            const produto = await this.produtosService.getById(id)
+            const product = await this.productService.getById(id)
 
-            return response.json(produto)
+            return response.json(product)
 
         } catch(err){
 
@@ -54,7 +54,7 @@ export class ProductsController {
             const { id } = request.params
             const { description, quantity, value } = request.body
 
-            await this.produtosService.update({ description, quantity, value}, id)
+            await this.productService.update({ description, quantity, value}, id)
 
             return response.status(200).send()
 
@@ -67,7 +67,7 @@ export class ProductsController {
         try {
             const { id } = request.params
 
-            await this.produtosService.delete(id)
+            await this.productService.delete(id)
 
             return response.status(200).send()
 

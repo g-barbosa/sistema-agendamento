@@ -22,8 +22,8 @@ export class FinancesService {
         var total = 0
 
         const results = scheduling.map(async scheduling => {
-            var service = await this.services.getById(scheduling.idServicos)
-            var product = await this.products.getById(scheduling.idProduto)
+            var service = await this.services.getById(scheduling.serviceId)
+            var product = await this.products.getById(scheduling.productId)
 
             lucro += service.value
             despesa += product.value

@@ -19,7 +19,7 @@ export class AgendaService {
     private customerRepository: ICustomerRepository
     private servicesRepository: IServicesRepository
     private productsRepository: IProductRepository
-    private agendamento: ISchedulingRepository
+    private scheduling: ISchedulingRepository
     constructor ( 
         private agendaRepository: IAgendaRepository
     ){
@@ -27,7 +27,7 @@ export class AgendaService {
         this.customerRepository = new CustomerRepository
         this.servicesRepository = new ServiceRepository
         this.productsRepository = new ProductRepository
-        this.agendamento = new SchedulingRepository
+        this.scheduling = new SchedulingRepository
     }
 
     async create(data: ICreateAgendaRequestDTO) {
@@ -41,8 +41,8 @@ export class AgendaService {
 
         var [id] = await this.agendaRepository.create(newAgenda);
 
-        var scheduling = new Scheduling({idAgenda: id, idServicos: service.id, idProduto: product.id})
-        await this.agendamento.create(scheduling)
+        var scheduling = new Scheduling({AgendaId: id, serviceId: service.id, productId: product.id})
+        await this.scheduling.create(scheduling)
 
     }
 

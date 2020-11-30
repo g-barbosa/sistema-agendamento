@@ -4,14 +4,14 @@ import { ServicesService } from '../services/ServicesService';
 export class ServicesController {
 
     constructor(
-        private servicosService: ServicesService,
+        private servicesService: ServicesService,
     ){}
 
     async create (request: Request, response: Response): Promise<Response> {
         try {
             const { description, value } = request.body
 
-            await this.servicosService.create({ description, value })
+            await this.servicesService.create({ description, value })
 
             return response.status(200).send()
 
@@ -24,9 +24,9 @@ export class ServicesController {
     async getAll (request: Request, response: Response): Promise<Response> {
         try {
 
-            const servicos = await this.servicosService.getAll()
+            const services = await this.servicesService.getAll()
 
-            return response.json(servicos)
+            return response.json(services)
 
         } catch(err){
 
@@ -38,7 +38,7 @@ export class ServicesController {
         try {
             const { id } = request.params
             
-            const servico = await this.servicosService.getById(id)
+            const servico = await this.servicesService.getById(id)
 
 
             return response.json(servico)
@@ -54,7 +54,7 @@ export class ServicesController {
             const { id } = request.params
             const { description, value } = request.body
 
-            await this.servicosService.update({ description, value}, id)
+            await this.servicesService.update({ description, value}, id)
 
             return response.status(200).send()
 
@@ -67,7 +67,7 @@ export class ServicesController {
         try {
             const { id } = request.params
 
-            await this.servicosService.delete(id)
+            await this.servicesService.delete(id)
 
             return response.status(200).send()
 

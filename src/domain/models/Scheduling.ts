@@ -4,15 +4,15 @@ export class Scheduling {
     public readonly id!: number;
 
     public readonly entityId!: string;
-    public idProduto: number;
-    public idServicos: number;
-    public idAgenda: number;
+    public productId: number;
+    public serviceId: number;
+    public AgendaId: number;
 
     constructor(props: Omit<Scheduling, 'id' | 'entityId'>, entityId?: string) {
 
-        this.idProduto = props.idProduto;
-        this.idServicos = props.idServicos
-        this.idAgenda = props.idAgenda
+        this.productId = props.productId;
+        this.serviceId = props.serviceId
+        this.AgendaId = props.AgendaId
 
         if (!entityId) {
             this.entityId = uuid();

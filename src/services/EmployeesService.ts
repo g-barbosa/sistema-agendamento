@@ -39,9 +39,9 @@ export class EmployeesService {
     }
 
     async update(employeeData: ICreateEmployeeRequestDTO, id: string) {
-        const clienteAlreadyExists = await this.employeeRepository.getById(id);
+        const customerAlreadyExists = await this.employeeRepository.getById(id);
 
-        if (!clienteAlreadyExists) throw new Error('employee não encontrado.');
+        if (!customerAlreadyExists) throw new Error('employee não encontrado.');
 
         var starts = GenNewDate(employeeData.starts)
         var ends = GenNewDate(employeeData.ends)
@@ -55,9 +55,9 @@ export class EmployeesService {
     }
 
     async delete(id: string) {
-        const clienteAlreadyExists = await this.employeeRepository.getById(id);
+        const customerAlreadyExists = await this.employeeRepository.getById(id);
 
-        if (!clienteAlreadyExists) throw new Error('employee não encontrado.');
+        if (!customerAlreadyExists) throw new Error('employee não encontrado.');
 
         await this.employeeRepository.delete(id);
     }
