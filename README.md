@@ -13,7 +13,7 @@ This project is an API to scheduling and management system to beauty salons. App
 - [:heavy_check_mark:] Scheduling CRUD
 - [:heavy_check_mark:] Agenda CRUD
 - [:heavy_check_mark:] Finances CRUD
-- [:x:] JWT
+- [:heavy_check_mark:] JWT
 
 
 ## To Contribute
